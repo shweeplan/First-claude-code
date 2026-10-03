@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "home": { "title": "{name} — Premium Car Rental in Egypt", "description": "Rent a Mercedes-Benz, BMW, Audi, Lexus, Volvo or Range Rover in Cairo, Alexandria, Hurghada and Sharm El Sheikh. Self-drive or with a private chauffeur." },
+    "fleet": { "title": "Our Fleet — {name}", "description": "Browse our curated fleet of late-model luxury sedans, SUVs and executive cars. Transparent daily, weekly and monthly rates in EGP." },
+    "car": { "title": "{car} Rental in Egypt — {name}", "description": "Rent the {car} ({year}) from {price} EGP per day. Full insurance options, airport delivery and chauffeur service available." },
+    "booking": { "title": "Book Your Car — {name}", "description": "Reserve your luxury rental in a few steps. Live price calculator, flexible extras and delivery across Egypt." },
+    "services": { "title": "Services — {name}", "description": "Self-drive rental, chauffeur service, airport transfers, wedding cars and long-term corporate rental across Egypt." },
+    "locations": { "title": "Locations & Delivery — {name}", "description": "Pickup and delivery in Cairo, New Cairo, Sheikh Zayed, Alexandria, Hurghada and Sharm El Sheikh, including all major airports." },
+    "about": { "title": "About Us — {name}", "description": "A premium car rental house built on well-kept cars, honest pricing and genuinely personal service." },
+    "contact": { "title": "Contact & FAQ — {name}", "description": "Talk to our team by phone, WhatsApp or email, and read answers to common rental questions." }
+  },
+  "nav": { "home": "Home", "fleet": "Fleet", "services": "Services", "locations": "Locations", "about": "About", "contact": "Contact", "book": "Book now", "menu": "Menu", "close": "Close", "language": "العربية", "languageLabel": "Switch language to Arabic", "skip": "Skip to content", "currencyLabel": "Display prices in" },
+  "common": {
+    "perDay": "/ day", "perWeek": "/ week", "perMonth": "/ month", "daily": "Daily", "weekly": "Weekly", "monthly": "Monthly",
+    "from": "From", "viewDetails": "View details", "bookNow": "Book now", "seats": "{n} seats", "learnMore": "Learn more", "viewFleet": "View the fleet",
+    "available": "Available", "limited": "Limited availability", "reserved": "Reserved",
+    "Sedan": "Sedan", "SUV": "SUV", "Executive": "Executive",
+    "Petrol": "Petrol", "Diesel": "Diesel", "Hybrid": "Hybrid", "Automatic": "Automatic",
+    "all": "All", "days": "{n} days", "day": "1 day", "egp": "EGP", "optional": "Optional", "required": "This field is required",
+    "back": "Back", "next": "Continue", "whatsappUs": "Chat on WhatsApp", "callUs": "Call us"
+  },
+  "locationNames": { "cairo": "Cairo", "newCairo": "New Cairo", "sheikhZayed": "Sheikh Zayed", "alexandria": "Alexandria", "hurghada": "Hurghada", "sharm": "Sharm El Sheikh", "cairoAirport": "Cairo International Airport (CAI)", "hurghadaAirport": "Hurghada Airport (HRG)", "sharmAirport": "Sharm El Sheikh Airport (SSH)" },
+  "features": {
+    "leather": "Nappa leather interior", "panoramic": "Panoramic roof", "adaptiveCruise": "Adaptive cruise control", "carplay": "Apple CarPlay & Android Auto", "ambient": "Ambient lighting", "parkAssist": "Park assist & sensors", "heated": "Heated & ventilated seats", "burmester": "Burmester® surround sound", "airSuspension": "Air suspension", "hud": "Head-up display", "camera360": "360° camera", "keyless": "Keyless entry & start", "massage": "Massaging seats", "sevenSeats": "Seven-seat layout", "awd": "All-wheel drive", "hybrid": "Hybrid efficiency", "rearEntertainment": "Rear-seat entertainment", "bowers": "Premium audio system"
+  },
+  "hero": {
+    "eyebrow": "Premium car rental · Egypt",
+    "title": "Arrive the way you intended.",
+    "subtitle": "A curated fleet of late-model Mercedes-Benz, BMW, Audi and more — delivered to your door, your hotel or the arrivals hall.",
+    "ctaPrimary": "Explore the fleet", "ctaSecondary": "Speak to us", "scroll": "Scroll",
+    "stats": [ { "value": "15+", "label": "Premium vehicles" }, { "value": "6", "label": "Cities & airports" }, { "value": "24/7", "label": "Roadside support" } ]
+  },
+  "widget": {
+    "title": "Reserve your car", "pickup": "Pickup location", "pickupDate": "Pickup date", "returnDate": "Return date", "category": "Car category", "anyCategory": "Any category", "search": "Check availability", "selectLocation": "Select location"
+  },
+  "home": {
+    "featured": { "eyebrow": "The collection", "title": "Featured vehicles", "subtitle": "Hand-picked favourites from our fleet — each maintained to dealership standards and delivered spotless.", "cta": "See all vehicles" },
+    "why": {
+      "eyebrow": "Why {name}", "title": "Quiet confidence, from first call to final handover.",
+      "items": [
+        { "title": "Immaculate, late-model cars", "text": "Every vehicle is under three years old, serviced at the authorised dealer and detailed before each rental." },
+        { "title": "Transparent pricing", "text": "The price you see is the price you pay. No hidden fees, no surprise charges at the counter." },
+        { "title": "Delivered anywhere", "text": "We bring the car to your home, hotel or airport arrivals — in Cairo, Alexandria and the Red Sea." },
+        { "title": "Personal, 24/7 support", "text": "A real person on WhatsApp at any hour, plus roadside assistance wherever you drive." }
+      ]
+    },
+    "services": { "eyebrow": "Services", "title": "One fleet, every kind of journey.", "cta": "All services" },
+    "testimonials": {
+      "eyebrow": "Guest notes", "title": "Trusted by travellers and executives alike.",
+      "items": [
+        { "quote": "The E-Class was waiting at arrivals with the driver holding my name. Spotless car, zero paperwork stress. This is how car rental should feel.", "name": "Omar H.", "role": "Business traveller, Dubai" },
+        { "quote": "We rented the X5 for the family trip to Sharm. Seven seats, great condition, and the team answered on WhatsApp at midnight when we had a question.", "name": "Sarah M.", "role": "Family holiday" },
+        { "quote": "For our wedding we booked the S-Class with a chauffeur. Immaculate, punctual and genuinely elegant. Guests kept asking where it was from.", "name": "Nour & Karim", "role": "Wedding, New Cairo" }
+      ],
+      "note": "Sample testimonials for demonstration."
+    },
+    "cta": { "title": "Your next journey starts with a message.", "text": "Tell us the dates and the destination. We will take care of the rest and confirm within minutes.", "primary": "Start your booking", "secondary": "WhatsApp us" }
+  },
+  "fleet": {
+    "eyebrow": "The fleet", "title": "Choose your drive.", "subtitle": "Late-model luxury sedans, SUVs and executive cars. All rates include basic insurance and unlimited support.",
+    "filters": "Filters", "category": "Category", "brand": "Brand", "seats": "Seats", "seatsAny": "Any", "seatsPlus": "{n}+", "maxPrice": "Max daily price", "reset": "Reset filters", "sortBy": "Sort by",
+    "sort": { "featured": "Featured", "priceAsc": "Price: low to high", "priceDesc": "Price: high to low", "newest": "Newest" },
+    "results": "{n} vehicles", "result1": "1 vehicle", "none": "No vehicles match these filters.", "noneHint": "Try widening your price range or clearing a filter.", "showFilters": "Filters", "hideFilters": "Hide filters"
+  },
+  "car": {
+    "back": "Back to fleet", "overview": "Overview", "specs": "Specifications", "year": "Year", "category": "Category", "transmission": "Transmission", "fuel": "Fuel", "engine": "Engine", "power": "Power", "seats": "Seats", "status": "Status",
+    "pricing": "Rental rates", "pricingNote": "Longer rentals unlock better rates — the calculator always applies the best combination.", "rate": "Rate", "perDayEq": "≈ {price} / day", "save": "Save {pct}%",
+    "included": "Included features", "includedInRate": "Included in every rental", "inclusions": ["Basic insurance with 200 km / day", "24/7 roadside assistance", "Free second driver on weekly rentals", "Spotless, fully fuelled hand-over"],
+    "bookTitle": "Reserve this car", "bookSubtitle": "Send a request in seconds. We confirm availability within minutes.", "gallery": "Gallery", "view": "View {n}", "similar": "You may also like",
+    "description": "The {car} pairs {power} of refined performance with a calm, beautifully finished cabin — ideal for {use}.",
+    "useSedan": "city driving and business meetings", "useSUV": "family journeys, weekends away and long-distance comfort", "useExecutive": "arriving in style at meetings, events and hotels"
+  },
+  "form": {
+    "name": "Full name", "phone": "Phone / WhatsApp", "email": "Email", "pickup": "Pickup date", "return": "Return date", "location": "Pickup location", "notes": "Notes (optional)", "send": "Send request",
+    "errName": "Please enter your full name", "errPhone": "Enter a valid phone number", "errEmail": "Enter a valid email address", "errDates": "Choose valid pickup and return dates", "errPast": "Pickup date can't be in the past", "errLocation": "Choose a pickup location", "errMessage": "Please write a short message",
+    "successTitle": "Request received", "successText": "Thank you, {name}. A member of our team will contact you shortly to confirm your reservation.", "reference": "Reference", "another": "Send another request", "demoNote": "Demo site: nothing is sent or stored — details stay in your browser."
+  },
+  "booking": {
+    "eyebrow": "Reservation", "title": "Book your car", "subtitle": "Five simple steps. No payment required today.",
+    "steps": ["Car", "Dates & location", "Extras", "Your details", "Summary"],
+    "step": "Step {n} of {total}",
+    "carTitle": "Choose your car", "carHint": "Select the vehicle you would like to reserve.", "filterAll": "All",
+    "datesTitle": "Dates & location", "pickupLocation": "Pickup location", "returnLocation": "Return location", "sameAsPickup": "Same as pickup", "pickupDate": "Pickup date", "returnDate": "Return date", "pickupTime": "Pickup time", "duration": "Duration",
+    "extrasTitle": "Make it yours", "extrasHint": "Optional extras, added to your total.",
+    "contactTitle": "Your details", "contactHint": "So we can confirm your reservation.", "licence": "Driving licence", "licenceLocal": "Egyptian licence", "licenceIntl": "International / foreign licence", "licenceHint": "Foreign visitors need a valid home licence plus an International Driving Permit (or Arabic translation).", "driverAge": "I confirm I am 25 years or older", "errAge": "Drivers must be at least 25 years old", "errCar": "Please select a car to continue",
+    "summaryTitle": "Review & confirm", "summaryHint": "Check everything below before confirming your request.", "vehicle": "Vehicle", "when": "Dates", "where": "Pickup", "returnTo": "Return", "driver": "Driver", "confirm": "Confirm reservation", "terms": "By confirming you agree to our rental terms. You will not be charged today — we will contact you to confirm availability and the deposit.",
+    "calc": { "title": "Your estimate", "rental": "Rental ({days})", "months": "{n} × monthly rate", "weeks": "{n} × weekly rate", "daysRate": "{n} × daily rate", "extras": "Extras", "total": "Estimated total", "selectCar": "Select a car to see your estimate", "deposit": "Refundable deposit", "savings": "Long-rental saving", "tax": "VAT included" },
+    "extras": {
+      "chauffeur": { "title": "Chauffeur service", "text": "A professional driver at your disposal." },
+      "airport": { "title": "Airport delivery", "text": "Meet & greet with the car at arrivals." },
+      "childSeat": { "title": "Child seat", "text": "Certified seat for ages 0–12." },
+      "driver": { "title": "Additional driver", "text": "Share the driving, fully covered." },
+      "insurance": { "title": "Full insurance", "text": "Zero-excess cover, including tyres and glass." }
+    },
+    "unitDay": "{price} / day", "unitFlat": "{price} one-time",
+    "successTitle": "Reservation request received", "successText": "Thank you, {name}. We have received your request for the {car}. Our team will confirm availability and next steps shortly — usually within 15 minutes.", "confirmWhatsapp": "Confirm on WhatsApp", "newBooking": "Make another booking", "waText": "Hello {name}, I just requested a booking ({ref}): {car}, {from} → {to}. Pickup: {pickup}."
+  },
+  "services": {
+    "eyebrow": "Services", "title": "Mobility, tailored to the occasion.", "subtitle": "From a weekend behind the wheel to a full-day chauffeur programme, every service is delivered with the same attention to detail.",
+    "items": {
+      "selfDrive": { "title": "Self-drive rental", "text": "Take the keys and go. Daily, weekly or monthly rates on a fleet of late-model luxury cars, delivered to your door.", "points": ["Free delivery in Greater Cairo", "Flexible daily, weekly & monthly rates", "Full insurance available", "Fully fuelled hand-over"] },
+      "chauffeur": { "title": "Chauffeur service", "text": "Arrive refreshed. Professional, discreet drivers who know Egypt's roads — by the hour, the day or the week.", "points": ["Vetted, uniformed drivers", "English & Arabic speaking", "Executive sedans & SUVs", "Hourly and full-day packages"] },
+      "airport": { "title": "Airport transfers", "text": "Meet & greet at Cairo, Hurghada and Sharm El Sheikh airports, with flight tracking so we are always on time.", "points": ["Cairo (CAI), Hurghada (HRG), Sharm (SSH)", "Flight tracking, no waiting fees", "Name-board meet & greet", "Fixed, transparent fares"] },
+      "wedding": { "title": "Wedding & event cars", "text": "Make the entrance. Immaculately detailed cars with optional floral styling and a dedicated chauffeur.", "points": ["S-Class, E-Class & Range Rover", "Ribbon & floral decoration", "Convoy of matching cars", "Hours tailored to your schedule"] },
+      "corporate": { "title": "Corporate & long-term", "text": "Dependable monthly rental for companies, expatriates and project teams, with maintenance fully handled.", "points": ["Monthly and annual contracts", "Replacement car guarantee", "Consolidated monthly invoicing", "Dedicated account manager"] }
+    },
+    "cta": { "title": "Need something bespoke?", "text": "Tell us what you have in mind — a convoy, a multi-city itinerary, a film shoot — and we will build it." }
+  },
+  "locations": {
+    "eyebrow": "Locations", "title": "Wherever you land, we are there.", "subtitle": "Branches and delivery zones across Cairo, the North Coast and the Red Sea. Delivery is free within Greater Cairo.",
+    "mapLabel": "Stylised map of Egypt showing our locations", "selected": "Selected", "directions": "Open in Maps", "airportBadge": "Airport pickup",
+    "items": {
+      "cairo": { "text": "Our flagship hub in the heart of the capital — Downtown, Zamalek, Maadi and Heliopolis." },
+      "newCairo": { "text": "Serving Fifth Settlement, Rehab, Madinaty and the New Administrative Capital." },
+      "sheikhZayed": { "text": "Covering Sheikh Zayed, Beverly Hills, 6th of October and Palm Hills." },
+      "alexandria": { "text": "Delivery across Alexandria and the North Coast, including Borg El Arab airport on request." },
+      "hurghada": { "text": "Airport and hotel delivery along the Red Sea — Hurghada, El Gouna and Makadi Bay." },
+      "sharm": { "text": "Airport and resort delivery in Sharm El Sheikh, Naama Bay and Dahab on request." }
+    },
+    "delivery": "Delivery", "free": "Free in Greater Cairo", "fee": "Fee applies"
+  },
+  "about": {
+    "eyebrow": "About {name}", "title": "A rental house built on trust.", "lead": "We started with a simple belief: renting a premium car in Egypt should feel as considered as owning one.",
+    "story": ["{name} began as a small collection of carefully chosen cars and a promise to treat every guest like a regular. Today we serve business travellers, families, newlyweds and corporate teams across Egypt's major cities and airports.", "We keep our fleet young, our pricing honest and our service personal. Every vehicle is serviced at authorised dealers, professionally detailed and inspected before it reaches you."],
+    "values": [ { "title": "Craft over volume", "text": "A smaller fleet, maintained better. We would rather say no than hand over a car that is not perfect." }, { "title": "Honest by default", "text": "Clear rates, clear contracts, clear deposits. Nothing hidden, nothing rushed." }, { "title": "Hospitality first", "text": "Our team comes from hospitality. You are a guest, not a booking number." } ],
+    "stats": [ { "value": "2018", "label": "Founded" }, { "value": "5,000+", "label": "Happy guests" }, { "value": "4.9", "label": "Average rating" }, { "value": "6", "label": "Locations" } ],
+    "cta": "Meet the fleet"
+  },
+  "contact": {
+    "eyebrow": "Contact", "title": "Let's plan your journey.", "subtitle": "Reach us any time. We typically reply within minutes.",
+    "phone": "Phone", "whatsapp": "WhatsApp", "email": "Email", "address": "Visit us", "hours": "Opening hours", "hoursValue": "Daily · {hours}", "support": "Roadside support is available 24/7.",
+    "formTitle": "Send us a message", "message": "Your message", "subject": "How can we help?",
+    "subjects": ["Reservation enquiry", "Chauffeur or airport transfer", "Wedding or event", "Corporate rental", "Something else"],
+    "faq": {
+      "eyebrow": "FAQ", "title": "Good to know.",
+      "items": [
+        { "q": "What do I need to rent a car?", "a": "A valid driving licence held for at least one year, your national ID or passport, and a credit or debit card in the driver's name. Drivers must be 25 or older." },
+        { "q": "How much is the security deposit?", "a": "Deposits range from EGP 10,000 for sedans to EGP 40,000 for premium SUVs and executive models. It is held on your card (or taken in cash) and released within 7 days after the car is returned in the same condition." },
+        { "q": "Is insurance included?", "a": "Every rental includes basic comprehensive insurance with a standard excess. You can upgrade to our zero-excess Full Insurance for a small daily fee, which also covers tyres and glass." },
+        { "q": "Can foreign visitors drive in Egypt?", "a": "Yes. Visitors can drive with a valid home-country licence together with an International Driving Permit, or an official Arabic translation of the licence. We are happy to advise before you travel." },
+        { "q": "Do you deliver to airports and hotels?", "a": "Yes. We deliver and collect at Cairo, Hurghada and Sharm El Sheikh airports, as well as hotels and residences across our service areas. Delivery is free within Greater Cairo." },
+        { "q": "Is there a mileage limit?", "a": "Daily rentals include 200 km per day, weekly rentals 1,400 km and monthly rentals 4,500 km. Additional kilometres are charged at a small per-km rate. Unlimited mileage is available on request." },
+        { "q": "Can I rent with a chauffeur?", "a": "Of course. Add Chauffeur service to any rental, or book hourly or full-day packages. Our drivers are vetted, uniformed and speak English and Arabic." },
+        { "q": "What is your cancellation policy?", "a": "Cancel free of charge up to 48 hours before pickup. Later cancellations may incur a one-day charge. We are always happy to reschedule." }
+      ]
+    }
+  },
+  "footer": { "tagline": "Premium car rental across Egypt. Quietly exceptional, since 2018.", "explore": "Explore", "contact": "Contact", "follow": "Follow", "rights": "© {year} {name}. All rights reserved.", "demo": "Demo website", "cities": "Cairo · Alexandria · Hurghada · Sharm El Sheikh" },
+  "whatsapp": { "label": "Chat with us on WhatsApp" },
+  "notFound": { "title": "This road leads nowhere.", "text": "The page you are looking for does not exist.", "cta": "Back to home" }
+}
