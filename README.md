@@ -13,7 +13,7 @@ npm run build && npm start   # production build
 ## Change the business name & contact details
 
 Edit **one file: [`config/site.ts`](config/site.ts)**: name (EN/AR), phone, WhatsApp, email, address, social links, USD rate and the WhatsApp greeting.
-Replace the `[DEALERSHIP_NAME]`, `[PHONE_NUMBER]`, … placeholders. Nothing else hardcodes the brand.
+Replace the remaining `[PHONE_NUMBER]`, `[EMAIL]`, … placeholders. Nothing else hardcodes the brand.
 
 Other content:
 

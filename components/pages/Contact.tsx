@@ -93,6 +93,7 @@ export function ContactBody() {
   const cards: { icon: IconName; label: string; value: string; href?: string; ltr?: boolean }[] = [
     { icon: "phone", label: t("contact.phone"), value: c.phone, href: telLink(), ltr: true },
     { icon: "whatsapp", label: t("contact.whatsapp"), value: c.whatsapp, href: wa, ltr: true },
+    { icon: "instagram", label: "Instagram", value: siteConfig.social.instagramHandle, href: siteConfig.social.instagram, ltr: true },
     { icon: "mail", label: t("contact.email"), value: c.email, href: mailLink(), ltr: true },
     { icon: "pin", label: t("contact.address"), value: locale === "ar" ? c.addressAr : c.address },
     { icon: "clock", label: t("contact.hours"), value: t("contact.hoursValue", { hours: c.hours }) },
@@ -109,7 +110,7 @@ export function ContactBody() {
                   <span className="min-w-0"><span className="block text-xs uppercase tracking-widest text-muted">{k.label}</span><span dir={k.ltr ? "ltr" : undefined} className="mt-1 block break-words text-lg">{k.value}</span></span>
                 </span>
               );
-              return <li key={k.label}>{k.href ? <a href={k.href} {...(k.icon === "whatsapp" ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="block">{inner}</a> : inner}</li>;
+              return <li key={k.label}>{k.href ? <a href={k.href} {...(k.icon === "whatsapp" || k.icon === "instagram" ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="block">{inner}</a> : inner}</li>;
             })}
           </ul>
           <p className="mt-6 text-sm text-muted">{t("contact.support")}</p>

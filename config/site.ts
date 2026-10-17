@@ -6,8 +6,8 @@
  * ─────────────────────────────────────────────────────────────
  */
 export const siteConfig = {
-  name: "[DEALERSHIP_NAME]",
-  nameAr: "[DEALERSHIP_NAME_AR]",
+  name: "Shwy",
+  nameAr: "Shwy",
 
   contact: {
     phone: "[PHONE_NUMBER]",
@@ -19,7 +19,8 @@ export const siteConfig = {
   },
 
   social: {
-    instagram: "https://instagram.com/",
+    instagram: "https://instagram.com/shwyystudio",
+    instagramHandle: "@shwyystudio",
     facebook: "https://facebook.com/",
     tiktok: "https://tiktok.com/",
     linkedin: "https://linkedin.com/",
