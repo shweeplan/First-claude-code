@@ -55,7 +55,7 @@ export type ChapterId = "build" | "traffic" | "sell" | "grow" | "reports" | "who
 
 export type Chapter = {
   id: ChapterId;
-  numeral: string;
+  n: number;
   title: string;
   kicker: string;
   intro: string;
@@ -65,7 +65,7 @@ export type Chapter = {
 export const chapters: Chapter[] = [
   {
     id: "build",
-    numeral: "I",
+    n: 1,
     title: "Build",
     kicker: "Raise the temple",
     intro: "Your store, built block by block. Fast, clean and ready to sell from day one.",
@@ -94,7 +94,7 @@ export const chapters: Chapter[] = [
   },
   {
     id: "traffic",
-    numeral: "II",
+    n: 2,
     title: "Get traffic",
     kicker: "Bring the caravans",
     intro: "A great store needs visitors. We bring the right people to the gate.",
@@ -118,7 +118,7 @@ export const chapters: Chapter[] = [
   },
   {
     id: "sell",
-    numeral: "III",
+    n: 3,
     title: "Sell",
     kicker: "Weigh every visit",
     intro: "Visits are good. Orders are better. We find what is in the way and remove it.",
@@ -142,7 +142,7 @@ export const chapters: Chapter[] = [
   },
   {
     id: "grow",
-    numeral: "IV",
+    n: 4,
     title: "Grow",
     kicker: "Let the river rise",
     intro: "Turn one order into many. Automations that keep customers coming back while you sleep.",
@@ -176,7 +176,7 @@ export const chapters: Chapter[] = [
   },
   {
     id: "reports",
-    numeral: "V",
+    n: 5,
     title: "Reports",
     kicker: "The scribe keeps count",
     intro: "Simple monthly reports. No jargon, just the numbers that matter.",
@@ -188,7 +188,7 @@ export const chapters: Chapter[] = [
   },
   {
     id: "who",
-    numeral: "VI",
+    n: 6,
     title: "Who it's for",
     kicker: "Open to every trader",
     intro: "Built for brands that are ready to sell properly online.",
@@ -212,7 +212,7 @@ export const chapters: Chapter[] = [
   },
   {
     id: "start",
-    numeral: "VII",
+    n: 7,
     title: "How we work",
     kicker: "Start a project",
     intro: "Top quality. Fast delivery. Fair prices. One team.",

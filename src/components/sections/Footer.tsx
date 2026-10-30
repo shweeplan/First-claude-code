@@ -13,7 +13,7 @@ export default function Footer() {
         <nav aria-label="Footer">
           <ul className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm">
             {chapters.map((c) => (
-              <li key={c.id}><a className="underline-offset-4 hover:underline" href={`#${c.id}`}>{c.numeral}. {c.title}</a></li>
+              <li key={c.id}><a className="underline-offset-4 hover:underline" href={`#${c.id}`}>{c.n}. {c.title}</a></li>
             ))}
             <li><a className="underline-offset-4 hover:underline" href={`mailto:${links.email}`}>Email</a></li>
             <li><a className="underline-offset-4 hover:underline" href={links.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>

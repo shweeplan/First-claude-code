@@ -1,4 +1,4 @@
-/** Rounded cartouche frame holding a Roman numeral or short label. */
+/** Rounded cartouche frame holding a chapter numeral or short label. */
 export default function Cartouche({ children, dark = false, className = "" }: { children: React.ReactNode; dark?: boolean; className?: string }) {
   return (
     <span className={`relative inline-flex items-center justify-center rounded-full border-2 px-6 py-1.5 font-display text-lg font-semibold tracking-widest ${dark ? "border-gold-light text-gold-light" : "border-gold text-brown"} ${className}`}>

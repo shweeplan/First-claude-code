@@ -1,5 +1,6 @@
 import { chapters, howWeWork, links } from "@/config/site";
 import Cartouche from "../ui/Cartouche";
+import EgyptianNumeral from "../ui/EgyptianNumeral";
 import ContactForm from "../ui/ContactForm";
 import MagneticButton from "../ui/MagneticButton";
 
@@ -8,7 +9,7 @@ export default function Start() {
   return (
     <section id="start" data-chapter="start" aria-labelledby="start-h" className="on-dark relative min-h-screen px-5 py-24 text-papyrus lg:pl-40 lg:pr-12">
       <div className="grain relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-night/85 p-8 backdrop-blur-sm sm:p-12">
-        <Cartouche dark>{c.numeral}</Cartouche>
+        <Cartouche dark><EgyptianNumeral n={c.n} className="h-7" /></Cartouche>
         <p className="mt-6 font-display text-xs tracking-[0.3em] text-gold-light">{c.kicker.toUpperCase()}</p>
         <h2 id="start-h" data-lines className="mt-2 font-display text-5xl font-semibold sm:text-7xl">
           <span className="reveal-line"><span>{c.title}</span></span>

@@ -1,6 +1,7 @@
 import type { Chapter as C } from "@/config/site";
 import Cartouche from "../ui/Cartouche";
 import Glyph from "../ui/Glyph";
+import EgyptianNumeral from "../ui/EgyptianNumeral";
 
 /** Editorial chapter: sticky title column, scrolling two-column feature rows. */
 export default function Chapter({ c, dark = false, children, after }: { c: C; dark?: boolean; children?: React.ReactNode; after?: React.ReactNode }) {
@@ -10,7 +11,7 @@ export default function Chapter({ c, dark = false, children, after }: { c: C; da
       <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <div className={`grain relative overflow-hidden rounded-3xl p-8 backdrop-blur-sm ${panel}`}>
-            <Cartouche dark={dark}>{c.numeral}</Cartouche>
+            <Cartouche dark={dark}><EgyptianNumeral n={c.n} className="h-7" /></Cartouche>
             <p className={`mt-6 font-display text-xs tracking-[0.3em] ${dark ? "text-gold-light" : "text-brown"}`}>{c.kicker.toUpperCase()}</p>
             <h2 id={`${c.id}-h`} data-lines className="mt-2 font-display text-5xl font-semibold leading-none sm:text-6xl">
               <span className="reveal-line"><span>{c.title}</span></span>
