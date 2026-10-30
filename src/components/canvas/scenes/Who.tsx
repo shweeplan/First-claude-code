@@ -1,8 +1,7 @@
 "use client";
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, cylGeo, ease, clamp01, reliefMat, SCENE_Z } from "../shared";
+import { mats, cylGeo, ease, clamp01, reliefMat, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { Obelisk, PyramidMesh } from "../Props";
 
@@ -13,7 +12,7 @@ export default function WhoScene() {
   const groups = useRef<(THREE.Group | null)[]>([]);
   const discs = useRef<(THREE.Mesh | null)[]>([]);
 
-  useFrame(() => {
+  useSceneFrame(() => {
     const p = chapterProgress("who");
     const idx = p < 0.14 ? -1 : Math.min(2, Math.floor(((p - 0.14) / 0.86) * 3));
     X.forEach((_, i) => {

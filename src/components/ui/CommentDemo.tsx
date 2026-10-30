@@ -15,7 +15,7 @@ export default function CommentDemo() {
   }, []);
   const show = (n: number) => `transition-all duration-500 ${step >= n ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`;
   return (
-    <figure className="grain relative overflow-hidden rounded-3xl bg-night/85 p-6 text-papyrus backdrop-blur-sm on-dark" data-reveal>
+    <figure className="grain relative overflow-hidden rounded-3xl bg-night/85 p-6 text-papyrus on-dark" data-reveal>
       <figcaption className="mb-4 flex items-center justify-between text-xs uppercase tracking-widest text-gold-light">
         <span>Comment to DM</span>
         <span className="rounded-full border border-gold-light px-3 py-1">Illustration</span>

@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, boxGeo, coneGeo, texBox, stoneMat, rng, useTier, SCENE_Z } from "../shared";
+import { mats, boxGeo, coneGeo, texBox, stoneMat, rng, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { createWaterMat, updateWater } from "../water";
 import { Colossus, Obelisk, Palms, PylonTower } from "../Props";
@@ -55,7 +54,7 @@ export default function TrafficScene() {
     reedRef.current!.instanceMatrix.needsUpdate = true;
   }, [reeds, dummy]);
 
-  useFrame((s) => {
+  useSceneFrame((s) => {
     const t = s.clock.elapsedTime;
     updateWater(water, t);
     const p = chapterProgress("traffic");

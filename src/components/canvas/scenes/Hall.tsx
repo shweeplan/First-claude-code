@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, cylGeo, texBox, stoneMat, reliefMat, useTier, SCENE_Z } from "../shared";
+import { mats, cylGeo, texBox, stoneMat, reliefMat, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { paintedWallTex } from "../textures";
 
 /** Papyrus-bell capital profile, lathed. */
@@ -46,7 +45,7 @@ function Embers({ count, positions }: { count: number; positions: [number, numbe
     return { geo: g, mat: m };
   }, [count, positions]);
   useEffect(() => () => { geo.dispose(); mat.dispose(); }, [geo, mat]);
-  useFrame((s) => { mat.uniforms.uTime.value = s.clock.elapsedTime; });
+  useSceneFrame((s) => { mat.uniforms.uTime.value = s.clock.elapsedTime; });
   return <points geometry={geo} material={mat} frustumCulled={false} />;
 }
 
@@ -89,7 +88,7 @@ export default function HallScene() {
     for (const m of [shafts, caps, bases, rings]) if (m.current) m.current.instanceMatrix.needsUpdate = true;
   }, [spots, dummy]);
 
-  useFrame((s) => {
+  useSceneFrame((s) => {
     const t = s.clock.elapsedTime;
     if (torch1.current) torch1.current.intensity = 70 + Math.sin(t * 9) * 8 + Math.sin(t * 17) * 5;
     if (torch2.current) torch2.current.intensity = 70 + Math.sin(t * 11 + 2) * 8 + Math.sin(t * 19) * 5;

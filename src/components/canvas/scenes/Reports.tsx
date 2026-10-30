@@ -1,8 +1,7 @@
 "use client";
 import { useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, boxGeo, cylGeo, ease, clamp01, useTier, SCENE_Z } from "../shared";
+import { mats, boxGeo, cylGeo, ease, clamp01, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { paintedWallTex } from "../textures";
 
@@ -16,7 +15,7 @@ export default function ReportsScene() {
   const bar = useRef<THREE.Group>(null);
   const wall = useMemo(() => new THREE.MeshStandardMaterial({ map: paintedWallTex(), roughness: 1 }), []);
 
-  useFrame(() => {
+  useSceneFrame(() => {
     const p = ease(clamp01(chapterProgress("reports") * 1.5));
     const h = 0.05 + p * 7;
     if (sheet.current) {

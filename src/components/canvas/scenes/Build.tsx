@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { stoneMat, texBox, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
+import { stoneMat, texBox, ease, clamp01, rng, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { Obelisk } from "../Props";
 
@@ -46,7 +45,7 @@ export default function BuildScene() {
   }, []);
   useEffect(() => () => { lineGeo.dispose(); geo.dispose(); }, [lineGeo, geo]);
 
-  useFrame(() => {
+  useSceneFrame(() => {
     const p = chapterProgress("build");
     const m = inst.current;
     if (m) {

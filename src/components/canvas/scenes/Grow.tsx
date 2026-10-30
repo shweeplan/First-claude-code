@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, boxGeo, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
+import { mats, boxGeo, ease, clamp01, rng, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { createWaterMat, updateWater } from "../water";
 import { Palms, PyramidMesh } from "../Props";
@@ -49,7 +48,7 @@ export default function GrowScene() {
   const fieldMats = useMemo(() => FIELD_COLORS.map((c) => new THREE.MeshStandardMaterial({ color: c, roughness: 1 })), []);
   useEffect(() => () => { fieldMats.forEach((m) => m.dispose()); floodMat.dispose(); }, [fieldMats, floodMat]);
 
-  useFrame((s) => {
+  useSceneFrame((s) => {
     const t = s.clock.elapsedTime;
     columnMat.uniforms.uTime.value = t;
     updateWater(floodMat, t);

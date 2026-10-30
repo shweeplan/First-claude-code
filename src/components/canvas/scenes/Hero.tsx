@@ -1,8 +1,7 @@
 "use client";
 import { useLayoutEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, sandMat, texBox, stoneMat, rng, useTier, SCENE_Z } from "../shared";
+import { mats, sandMat, texBox, stoneMat, rng, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { scrollState } from "@/lib/scroll";
 import { Obelisk, Palms, PyramidMesh } from "../Props";
 
@@ -109,7 +108,7 @@ function Dust({ count, z0, z1 }: { count: number; z0: number; z1: number }) {
     });
     return { geo: g, mat: m };
   }, [count, z0, z1]);
-  useFrame((s) => {
+  useSceneFrame((s) => {
     mat.uniforms.uTime.value = s.clock.elapsedTime;
   });
   return <points ref={ref} geometry={geo} material={mat} frustumCulled={false} />;
@@ -119,7 +118,7 @@ export { Dust };
 /** Pointer-reactive warm light for the hero. */
 function CursorLight() {
   const ref = useRef<THREE.PointLight>(null);
-  useFrame(() => {
+  useSceneFrame(() => {
     if (!ref.current) return;
     const { x, y } = scrollState.pointer;
     ref.current.position.x += (x * 10 - ref.current.position.x) * 0.06;
@@ -135,7 +134,7 @@ const PALMS: [number, number, number][] = [
 export default function HeroScene() {
   const tier = useTier();
   const obe = useRef<THREE.Group>(null);
-  useFrame((s) => {
+  useSceneFrame((s) => {
     const t = s.clock.elapsedTime;
     if (obe.current) {
       const rise = Math.min(1, t / 3.2); // rises from the dunes on load

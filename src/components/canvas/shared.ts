@@ -1,10 +1,22 @@
 import * as THREE from "three";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useRef } from "react";
+import { useFrame, type RootState } from "@react-three/fiber";
 import type { Tier } from "@/lib/env";
 import { stoneTex, reliefTex, sandTex } from "./textures";
 
 export const TierContext = createContext<Tier>("full");
 export const useTier = () => useContext(TierContext);
+
+/** Whether the scene wrapping this component is near the camera. Hidden scenes stay mounted (no rebuild hitch) but skip their per-frame work. */
+export const ActiveContext = createContext(true);
+export function useSceneFrame(cb: (state: RootState, dt: number) => void) {
+  const active = useContext(ActiveContext);
+  const on = useRef(active);
+  on.current = active;
+  useFrame((s, dt) => {
+    if (on.current) cb(s, dt);
+  });
+}
 
 /** Shared materials: created once, reused by every scene. */
 export const mats = {

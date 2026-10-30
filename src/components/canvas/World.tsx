@@ -1,9 +1,9 @@
 "use client";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Bloom, EffectComposer, Noise, SMAA, Vignette } from "@react-three/postprocessing";
+import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
-import { TierContext, SCENE_Z, skyState, quality, type SceneId } from "./shared";
+import { ActiveContext, TierContext, SCENE_Z, skyState, quality, type SceneId } from "./shared";
 import { scrollState } from "@/lib/scroll";
 import type { Tier } from "@/lib/env";
 import Sky from "./Sky";
@@ -56,7 +56,7 @@ function Rig({ reduced, started, onNear, onFrame }: { reduced: boolean; started:
   const tmpP = useMemo(() => new THREE.Vector3(), []);
   const tmpL = useMemo(() => new THREE.Vector3(), []);
   const lastKey = useRef("");
-  const firstFrame = useRef(true);
+  const reported = useRef(false);
 
   // Map page progress -> rail parameter using each chapter's DOM anchors (enter/leave keyframes).
   const targetT = () => {
@@ -78,10 +78,12 @@ function Rig({ reduced, started, onNear, onFrame }: { reduced: boolean; started:
     return 1;
   };
 
-  useFrame((_, dt) => {
+  useFrame(({ clock }, dt) => {
     if (started && introStartMs === null) introStartMs = performance.now();
-    if (firstFrame.current) {
-      firstFrame.current = false;
+    // Every scene is visible for the first 1.4s so shaders and textures compile behind the loader, not mid-scroll.
+    const warm = clock.elapsedTime < 1.4;
+    if (!warm && !reported.current) {
+      reported.current = true;
       onFrame();
     }
     const goal = reduced ? 0 : targetT();
@@ -122,7 +124,7 @@ function Rig({ reduced, started, onNear, onFrame }: { reduced: boolean; started:
     // which scenes are near enough to mount
     const near = new Set<SceneId>();
     ORDER.forEach((id) => {
-      if (Math.abs(camera.position.z - SCENE_Z[id]) < 85) near.add(id);
+      if (warm || Math.abs(camera.position.z - SCENE_Z[id]) < 100) near.add(id);
     });
     const key = [...near].join(",");
     if (key !== lastKey.current) {
@@ -132,6 +134,15 @@ function Rig({ reduced, started, onNear, onFrame }: { reduced: boolean; started:
     if (reduced) invalidate();
   });
   return null;
+}
+
+/** Keeps a scene mounted but hidden and idle when the camera is far away. */
+function Scene({ active, children }: { active: boolean; children: React.ReactNode }) {
+  return (
+    <ActiveContext.Provider value={active}>
+      <group visible={active}>{children}</group>
+    </ActiveContext.Provider>
+  );
 }
 
 /** Watches frame time. If the machine cannot hold ~40fps twice in a row: full drops to lite, lite drops its resolution. */
@@ -197,7 +208,7 @@ function Lights({ shadows }: { shadows: boolean }) {
 }
 
 export default function World({ tier: tierIn, reduced, started, onFrame }: { tier: Tier; reduced: boolean; started: boolean; onFrame: () => void }) {
-  const [near, setNear] = useState<Set<SceneId>>(new Set(["hero", "build"]));
+  const [near, setNear] = useState<Set<SceneId>>(new Set(ORDER));
   const [slow, setSlow] = useState(false);
   const [lowRes, setLowRes] = useState(false);
   const tier: Tier = slow ? "lite" : tierIn;
@@ -238,17 +249,16 @@ export default function World({ tier: tierIn, reduced, started, onFrame }: { tie
             <Rig reduced={reduced} started={started} onNear={setNear} onFrame={onFrame} />
             <Dunes />
             <Skyline />
-            {show("hero") && <HeroScene />}
-            {!reduced && show("build") && <BuildScene />}
-            {!reduced && show("traffic") && <TrafficScene />}
-            {!reduced && show("sell") && <SellScene />}
-            {!reduced && show("grow") && <GrowScene />}
-            {!reduced && show("reports") && <ReportsScene />}
-            {!reduced && show("who") && <WhoScene />}
-            {!reduced && show("start") && <HallScene />}
+            <Scene active={show("hero")}><HeroScene /></Scene>
+            {!reduced && <Scene active={show("build")}><BuildScene /></Scene>}
+            {!reduced && <Scene active={show("traffic")}><TrafficScene /></Scene>}
+            {!reduced && <Scene active={show("sell")}><SellScene /></Scene>}
+            {!reduced && <Scene active={show("grow")}><GrowScene /></Scene>}
+            {!reduced && <Scene active={show("reports")}><ReportsScene /></Scene>}
+            {!reduced && <Scene active={show("who")}><WhoScene /></Scene>}
+            {!reduced && <Scene active={show("start")}><HallScene /></Scene>}
             {full && (
-              <EffectComposer multisampling={0}>
-                <SMAA />
+              <EffectComposer multisampling={2}>
                 <Bloom intensity={0.5} luminanceThreshold={1.05} mipmapBlur />
                 <Vignette eskil={false} offset={0.25} darkness={0.5} />
                 <Noise opacity={0.035} />

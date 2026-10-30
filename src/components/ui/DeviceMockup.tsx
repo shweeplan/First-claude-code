@@ -3,7 +3,7 @@ import { demoProject as d } from "@/config/site";
 /** Stylised laptop showing the SHWY Store demo (dark fashion store). Pure CSS, no images. */
 export default function DeviceMockup() {
   return (
-    <figure data-reveal className="grain relative overflow-hidden rounded-3xl bg-papyrus/90 p-6 backdrop-blur-sm">
+    <figure data-reveal className="grain relative overflow-hidden rounded-3xl bg-papyrus/90 p-6">
       <figcaption className="mb-4 inline-block rounded-full border-2 border-gold px-4 py-1 text-xs font-bold uppercase tracking-widest text-brown">{d.label}</figcaption>
       <div role="img" aria-label="Stylised mockup of the SHWY Store demo, a dark fashion online store" className="mx-auto max-w-md">
         <div className="rounded-t-xl border-4 border-ink bg-[#0c0c0f] p-3">

@@ -11,6 +11,8 @@ export const scrollState = {
   /** chapter anchors, normalized 0..1, filled by <Experience/> */
   anchors: {} as Record<string, { start: number; end: number }>,
   pointer: { x: 0, y: 0 },
+  /** active feature step per chapter id, -1 while on the title card; written by StageDriver */
+  steps: {} as Record<string, number>,
 };
 
 export function chapterProgress(id: string): number {

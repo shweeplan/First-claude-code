@@ -8,7 +8,7 @@ export default function Start() {
   const c = chapters.find((x) => x.id === "start")!;
   return (
     <section id="start" data-chapter="start" aria-labelledby="start-h" className="on-dark relative min-h-screen px-5 py-24 text-papyrus lg:pl-40 lg:pr-12">
-      <div className="grain relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-night/85 p-8 backdrop-blur-sm sm:p-12">
+      <div className="grain relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-night/85 p-8 sm:p-12">
         <Cartouche><ChapterNumeral n={c.n} className="h-7" /></Cartouche>
         <p className="mt-6 font-display text-xs tracking-[0.3em] text-gold-light">{c.kicker.toUpperCase()}</p>
         <h2 id="start-h" data-lines className="mt-2 font-display text-5xl font-semibold sm:text-7xl">

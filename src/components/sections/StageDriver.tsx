@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { scrollState } from "@/lib/scroll";
 
 const INTRO_END = 0.14;
 
@@ -18,12 +19,21 @@ export default function StageDriver() {
     const ticks = Array.from(section.querySelectorAll<HTMLElement>(".stage-tick"));
     const n = items.length;
 
+    // Cached page metrics: reading layout on every scroll event is what makes fast scrolling stutter.
+    let top = 0;
+    let total = 1;
+    const measure = () => {
+      top = section.getBoundingClientRect().top + window.scrollY;
+      total = Math.max(1, section.offsetHeight - window.innerHeight);
+    };
+
     const update = () => {
-      const total = Math.max(1, section.offsetHeight - window.innerHeight);
-      const p = Math.min(1, Math.max(0, -section.getBoundingClientRect().top / total));
+      const p = Math.min(1, Math.max(0, (window.scrollY - top) / total));
       const inIntro = p < INTRO_END;
-      section.dataset.phase = inIntro ? "intro" : "items";
+      const phase = inIntro ? "intro" : "items";
+      if (section.dataset.phase !== phase) section.dataset.phase = phase;
       const idx = inIntro ? -1 : Math.min(n - 1, Math.floor(((p - INTRO_END) / (1 - INTRO_END)) * n));
+      scrollState.steps[section.id] = idx;
       items.forEach((el, i) => {
         const state = i === idx ? "active" : i < idx ? "past" : "future";
         if (el.dataset.state === state) return;
@@ -31,7 +41,10 @@ export default function StageDriver() {
         if (state === "active") el.removeAttribute("inert");
         else el.setAttribute("inert", "");
       });
-      ticks.forEach((t, i) => (t.dataset.on = i === idx ? "true" : i < idx ? "done" : "false"));
+      ticks.forEach((t, i) => {
+        const v = i === idx ? "true" : i < idx ? "done" : "false";
+        if (t.dataset.on !== v) t.dataset.on = v;
+      });
     };
 
     const reset = () => {
@@ -48,22 +61,31 @@ export default function StageDriver() {
       if (want === on) return;
       on = want;
       if (on) {
+        measure();
         update();
         window.addEventListener("scroll", update, { passive: true });
-        window.addEventListener("resize", update);
+        window.addEventListener("resize", onResize);
       } else {
         window.removeEventListener("scroll", update);
-        window.removeEventListener("resize", update);
+        window.removeEventListener("resize", onResize);
         reset();
       }
     };
+    const onResize = () => {
+      measure();
+      update();
+    };
+    // layout shifts (fonts, motion mode) change section positions
+    const ro = new ResizeObserver(() => on && onResize());
+    ro.observe(document.body);
     sync();
     const mo = new MutationObserver(sync);
     mo.observe(html, { attributes: true, attributeFilter: ["data-motion"] });
     return () => {
       mo.disconnect();
+      ro.disconnect();
       window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("resize", onResize);
       reset();
     };
   }, []);

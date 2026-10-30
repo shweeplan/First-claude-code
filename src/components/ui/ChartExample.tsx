@@ -1,7 +1,7 @@
 /** Stylised chart with no data. Labelled Example. */
 export default function ChartExample() {
   return (
-    <figure data-reveal className="grain relative overflow-hidden rounded-3xl bg-papyrus/90 p-6 backdrop-blur-sm">
+    <figure data-reveal className="grain relative overflow-hidden rounded-3xl bg-papyrus/90 p-6">
       <figcaption className="mb-3 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-brown">
         <span>Monthly report</span>
         <span className="rounded-full border-2 border-gold px-3 py-1">Example</span>

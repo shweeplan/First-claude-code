@@ -31,14 +31,14 @@ export default function Chapter({ c, children }: { c: C; children?: React.ReactN
 
         <div className="stage-grid grid w-full gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
           <div className="lg:self-center">
-            <div className={`grain relative overflow-hidden rounded-3xl p-6 backdrop-blur-sm sm:p-8 ${panel}`}>
+            <div className={`grain relative overflow-hidden rounded-3xl p-6 sm:p-8 ${panel}`}>
               <Cartouche><ChapterNumeral n={c.n} className="h-7" /></Cartouche>
               <p className="stage-card-intro mt-5 font-display text-xs tracking-[0.3em] text-brown">{c.kicker.toUpperCase()}</p>
               <h2 id={`${c.id}-h`} className="mt-3 font-display text-4xl font-semibold leading-none sm:text-6xl">{c.title}</h2>
               <p className="stage-card-intro mt-4 text-lg">{c.intro}</p>
             </div>
           </div>
-          <ul className={`stage-items grain relative overflow-hidden rounded-3xl px-6 backdrop-blur-sm ${panel}`}>
+          <ul className={`stage-items grain relative overflow-hidden rounded-3xl px-6 ${panel}`}>
             {c.items.map((it, i) => (
               <li key={it.title} className="stage-item">
                 <div className="stage-body">

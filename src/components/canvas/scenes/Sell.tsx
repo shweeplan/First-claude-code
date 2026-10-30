@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, boxGeo, cylGeo, texBox, stoneMat, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
+import { mats, boxGeo, cylGeo, texBox, stoneMat, ease, clamp01, rng, useTier, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { PylonTower } from "../Props";
 
@@ -41,7 +40,7 @@ export default function SellScene() {
     mesh.setMatrixAt(idx, child.matrixWorld);
   };
 
-  useFrame((s) => {
+  useSceneFrame((s) => {
     const p = chapterProgress("sell");
     const tilt = Math.sin(s.clock.elapsedTime * 0.8) * 0.05 + (0.35 - ease(clamp01(p * 1.4)) * 0.35);
     if (beam.current) beam.current.rotation.z = tilt;
