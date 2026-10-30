@@ -1,0 +1,68 @@
+"use client";
+import { useEffect, useState } from "react";
+import { chapters } from "@/config/site";
+import MagneticButton from "./MagneticButton";
+import Wordmark from "./Wordmark";
+
+/** Sticky chapter nav (side on desktop, bottom strip on mobile) plus a persistent CTA. */
+export default function Nav() {
+  const [active, setActive] = useState("hero");
+
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>("[data-chapter]");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive((e.target as HTMLElement).dataset.chapter!)),
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <>
+      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 lg:px-8">
+        <a href="#hero" aria-label="SHWY Studio, back to top" className="rounded-full bg-papyrus/80 px-4 py-1 backdrop-blur">
+          <Wordmark className="text-3xl" />
+        </a>
+        <MagneticButton href="#start" className="!min-h-10 !px-5 !py-2 text-xs shadow-lg">
+          Start a project
+        </MagneticButton>
+      </header>
+
+      <nav aria-label="Chapters" className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 lg:block">
+        <ol className="space-y-1 rounded-2xl bg-papyrus/80 p-2 backdrop-blur">
+          {chapters.map((c) => (
+            <li key={c.id}>
+              <a
+                href={`#${c.id}`}
+                aria-current={active === c.id ? "true" : undefined}
+                className={`group flex items-center gap-3 rounded-xl px-3 py-1.5 font-display text-sm transition-colors ${active === c.id ? "bg-brown text-gold-light" : "text-brown hover:bg-sand"}`}
+              >
+                <span className="w-8 text-right font-semibold">{c.numeral}</span>
+                <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:opacity-100">
+                  {c.title}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <nav aria-label="Chapters" className="fixed inset-x-0 bottom-0 z-40 overflow-x-auto bg-papyrus/90 backdrop-blur lg:hidden">
+        <ol className="flex min-w-max gap-1 px-3 py-2">
+          {chapters.map((c) => (
+            <li key={c.id}>
+              <a
+                href={`#${c.id}`}
+                aria-current={active === c.id ? "true" : undefined}
+                className={`block rounded-lg px-3 py-1.5 font-display text-sm font-semibold ${active === c.id ? "bg-brown text-gold-light" : "text-brown"}`}
+              >
+                {c.numeral}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
+  );
+}
