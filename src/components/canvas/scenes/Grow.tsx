@@ -55,7 +55,7 @@ export default function GrowScene() {
       </mesh>
       <instancedMesh ref={petals} args={[petalGeo, mats.carnelian, lotus.length * perLotus]} frustumCulled={false} />
       <mesh ref={light} position={[0, 1, -6]} material={mats.beam}>
-        <cylinderGeometry args={[0.7, 1.1, 1, 24, 1, true]} />
+        <cylinderGeometry args={[0.4, 0.9, 1, 24, 1, true]} />
       </mesh>
       <mesh position={[0, 0.6, -6]} rotation={[0, Math.PI / 4, 0]} scale={[4, 1.2, 4]} material={mats.sandstone} geometry={coneGeo} />
       <pointLight position={[0, 8, -2]} intensity={120} distance={50} color="#9fe8d8" />

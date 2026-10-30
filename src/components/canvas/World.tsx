@@ -37,7 +37,7 @@ function useRail() {
   }, []);
 }
 
-function Rig({ reduced, onNear, onFrame }: { reduced: boolean; onNear: (near: Set<SceneId>) => void; onFrame: () => void }) {
+function Rig({ reduced, started, onNear, onFrame }: { reduced: boolean; started: boolean; onNear: (near: Set<SceneId>) => void; onFrame: () => void }) {
   const rail = useRail();
   const { camera, scene, invalidate } = useThree();
   const cur = useRef({ t: 0 });
@@ -46,6 +46,7 @@ function Rig({ reduced, onNear, onFrame }: { reduced: boolean; onNear: (near: Se
   const bg = useMemo(() => new THREE.Color(), []);
   const lastKey = useRef("");
   const firstFrame = useRef(true);
+  const startAt = useRef<number | null>(null);
 
   // Map page progress -> rail parameter using each chapter's DOM anchors (enter/leave keyframes).
   const targetT = () => {
@@ -67,7 +68,8 @@ function Rig({ reduced, onNear, onFrame }: { reduced: boolean; onNear: (near: Se
     return 1;
   };
 
-  useFrame((_, dt) => {
+  useFrame(({ clock }, dt) => {
+    if (started && startAt.current === null) startAt.current = clock.elapsedTime;
     if (firstFrame.current) {
       firstFrame.current = false;
       onFrame();
@@ -77,11 +79,25 @@ function Rig({ reduced, onNear, onFrame }: { reduced: boolean; onNear: (near: Se
     const t = Math.min(0.9999, Math.max(0, cur.current.t));
     rail.pos.getPoint(t, tmpP);
     rail.look.getPoint(t, tmpL);
+    // opening dolly: pull in from far and low once the loader leaves
+    const k = reduced ? 1 : startAt.current === null ? 0 : Math.min(1, (clock.elapsedTime - startAt.current) / 4);
+    const intro = Math.pow(1 - k, 3);
+    tmpP.z += intro * 28;
+    tmpP.y -= intro * 2.5;
     // cursor parallax
     tmpP.x += scrollState.pointer.x * 1.2;
     tmpP.y += scrollState.pointer.y * 0.6;
     camera.position.copy(tmpP);
     camera.lookAt(tmpL);
+
+    // scroll speed widens the lens a little, so fast scrolling feels like flying
+    const cam = camera as THREE.PerspectiveCamera;
+    scrollState.velocity *= 0.92;
+    const fov = 52 + Math.min(9, Math.abs(scrollState.velocity) * 0.06);
+    if (Math.abs(cam.fov - fov) > 0.02) {
+      cam.fov += (fov - cam.fov) * 0.12;
+      cam.updateProjectionMatrix();
+    }
 
     // sky + fog follow the nearest scene
     const f = t * (ORDER.length - 1);
@@ -114,7 +130,7 @@ function Lights() {
   );
 }
 
-export default function World({ tier, reduced, onFrame }: { tier: Tier; reduced: boolean; onFrame: () => void }) {
+export default function World({ tier, reduced, started, onFrame }: { tier: Tier; reduced: boolean; started: boolean; onFrame: () => void }) {
   const [near, setNear] = useState<Set<SceneId>>(new Set(["hero", "build"]));
   const full = tier === "full" && !reduced;
 
@@ -145,7 +161,7 @@ export default function World({ tier, reduced, onFrame }: { tier: Tier; reduced:
         <TierContext.Provider value={tier}>
           <Suspense fallback={null}>
             <Lights />
-            <Rig reduced={reduced} onNear={setNear} onFrame={onFrame} />
+            <Rig reduced={reduced} started={started} onNear={setNear} onFrame={onFrame} />
             <Dunes />
             {show("hero") && <HeroScene />}
             {!reduced && show("build") && <BuildScene />}
@@ -156,7 +172,7 @@ export default function World({ tier, reduced, onFrame }: { tier: Tier; reduced:
             {!reduced && show("start") && <HallScene />}
             {full && (
               <EffectComposer multisampling={0}>
-                <Bloom intensity={0.7} luminanceThreshold={0.9} mipmapBlur />
+                <Bloom intensity={0.45} luminanceThreshold={1.05} mipmapBlur />
                 <Vignette eskil={false} offset={0.25} darkness={0.55} />
                 <Noise opacity={0.04} />
               </EffectComposer>

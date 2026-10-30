@@ -37,10 +37,10 @@ export default function Nav() {
               <a
                 href={`#${c.id}`}
                 aria-current={active === c.id ? "true" : undefined}
-                className={`group flex items-center gap-3 rounded-xl px-3 py-1.5 font-display text-sm transition-colors ${active === c.id ? "bg-brown text-gold-light" : "text-brown hover:bg-sand"}`}
+                className={`group flex items-center gap-3 rounded-xl px-3 py-1.5 font-display text-sm transition-all ${active === c.id ? "bg-[#1c110a] text-gold-light shadow-[inset_0_0_0_2px_#c9973e]" : "bg-[#3b2415]/90 text-gold hover:bg-[#1c110a]"}`}
               >
                 <span className="flex w-8 justify-end"><ChapterNumeral n={c.n} className="h-5" /></span>
-                <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:opacity-100">
+                <span className="max-w-0 overflow-hidden whitespace-nowrap text-gold-light opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:opacity-100">
                   {c.title}
                 </span>
               </a>
@@ -56,7 +56,7 @@ export default function Nav() {
               <a
                 href={`#${c.id}`}
                 aria-current={active === c.id ? "true" : undefined}
-                className={`block rounded-lg px-3 py-1.5 font-display text-sm font-semibold ${active === c.id ? "bg-brown text-gold-light" : "text-brown"}`}
+                className={`block rounded-lg bg-[#3b2415] px-3 py-1.5 ${active === c.id ? "shadow-[inset_0_0_0_2px_#ebc77e]" : "opacity-80"}`}
               >
                 <ChapterNumeral n={c.n} className="h-5" />
               </a>

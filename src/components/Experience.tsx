@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,12 +18,14 @@ export default function Experience({ children }: { children: React.ReactNode }) 
   const [progress, setProgress] = useState(0.05);
   const [ready, setReady] = useState(false);
   const [done, setDone] = useState(false);
+  const bar = useRef<HTMLDivElement>(null);
 
   const step = useCallback((to: number) => setProgress((p) => Math.max(p, to)), []);
 
   useEffect(() => {
     const m = detectTier();
     setMode(m);
+    document.documentElement.dataset.motion = m.reduced || m.tier === "static" ? "reduced" : "full";
     step(0.2);
     document.fonts.ready.then(() => step(m.tier === "static" ? 1 : 0.5));
     if (m.tier === "static") setReady(true);
@@ -60,8 +62,10 @@ export default function Experience({ children }: { children: React.ReactNode }) 
     if (!mode) return;
     const update = () => {
       const total = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      scrollState.velocity = window.scrollY - scrollState.y;
       scrollState.y = window.scrollY;
       scrollState.progress = Math.min(1, Math.max(0, window.scrollY / total));
+      if (bar.current) bar.current.style.transform = `scaleX(${scrollState.progress})`;
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -75,6 +79,9 @@ export default function Experience({ children }: { children: React.ReactNode }) 
     gsap.ticker.lagSmoothing(0);
 
     const ctx = gsap.context(() => {
+      // hero is held hidden until the loader leaves
+      gsap.set("[data-hero]", { opacity: 0, y: 40 });
+      gsap.set("[data-hero-lines] .reveal-line > span", { yPercent: 110 });
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.from(el, {
           y: 48, opacity: 0, duration: 1, ease: "power3.out",
@@ -116,10 +123,18 @@ export default function Experience({ children }: { children: React.ReactNode }) 
     };
   }, [mode]);
 
+  // hero entrance plays once the loader is gone
+  useEffect(() => {
+    if (!done || !mode || mode.reduced) return;
+    gsap.to("[data-hero-lines] .reveal-line > span", { yPercent: 0, duration: 1.2, ease: "power4.out", stagger: 0.14 });
+    gsap.to("[data-hero]", { opacity: 1, y: 0, duration: 1, ease: "power3.out", stagger: 0.15, delay: 0.5 });
+  }, [done, mode]);
+
   const canvasOn = mode && mode.tier !== "static";
   return (
     <>
-      {canvasOn && <World tier={mode.tier} reduced={mode.reduced} onFrame={onFrame} />}
+      <div ref={bar} className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left scale-x-0 bg-gold" aria-hidden="true" />
+      {canvasOn && <World tier={mode.tier} reduced={mode.reduced} started={ready} onFrame={onFrame} />}
       {mode?.tier === "static" && <div className="no-webgl-bg fixed inset-0 z-0" aria-hidden="true" />}
       {!done && <Loader progress={progress} ready={ready} reduced={!!mode?.reduced} onDone={() => setDone(true)} />}
       <div className="relative z-10">{children}</div>

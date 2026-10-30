@@ -15,7 +15,7 @@ export const mats = {
   carnelian: new THREE.MeshStandardMaterial({ color: "#b2432d", roughness: 0.6 }),
   linen: new THREE.MeshStandardMaterial({ color: "#f1e6cf", roughness: 1, side: THREE.DoubleSide }),
   dark: new THREE.MeshStandardMaterial({ color: "#2b1a0e", roughness: 1 }),
-  glow: new THREE.MeshBasicMaterial({ color: "#ffd88a", toneMapped: false }),
+  glow: new THREE.MeshBasicMaterial({ color: new THREE.Color("#ffd88a").multiplyScalar(2.4), toneMapped: false }),
   beam: new THREE.MeshBasicMaterial({
     color: "#ffd88a",
     transparent: true,
