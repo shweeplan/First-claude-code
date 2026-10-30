@@ -45,7 +45,7 @@ export default function SellScene() {
   });
 
   return (
-    <group position={[0, 0, SCENE_Z.sell]}>
+    <group position={[0, 0, SCENE_Z.sell - 4]} scale={0.75}>
       <group position={[0, 0, 4]}>
         <mesh position={[0, 3.2, 0]} scale={[0.5, 6.4, 0.5]} material={mats.gold} geometry={boxGeo} />
         <mesh position={[0, 0.2, 0]} scale={[3, 0.4, 3]} material={mats.sandDark} geometry={boxGeo} />

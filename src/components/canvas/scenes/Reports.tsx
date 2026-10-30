@@ -30,7 +30,7 @@ export default function ReportsScene() {
   });
 
   return (
-    <group position={[0, 0, SCENE_Z.reports]}>
+    <group position={[0, 0, SCENE_Z.reports - 4]} scale={0.85}>
       <mesh position={[0, 8.2, 0]} rotation={[0, 0, Math.PI / 2]} scale={[0.35, 9.4, 0.35]} material={mats.gold} geometry={cylGeo} />
       <mesh ref={sheet} position={[0, 8, 0]} material={mats.linen} geometry={boxGeo} />
       <mesh ref={roll} position={[0, 8, 0.05]} rotation={[0, 0, Math.PI / 2]} scale={[0.5, 9.2, 0.5]} material={mats.sandstone} geometry={cylGeo} />

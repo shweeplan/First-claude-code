@@ -130,7 +130,11 @@ export default function HeroScene() {
   }, []);
   useFrame((s) => {
     const t = s.clock.elapsedTime;
-    if (sun.current) sun.current.position.y = 9 + Math.sin(t * 0.2) * 0.2;
+    if (sun.current) {
+      sun.current.position.y = 30 + Math.sin(t * 0.2) * 0.4;
+      // sun sets behind the dunes as the camera leaves the hero
+      sun.current.scale.setScalar(2.1 * Math.min(1, Math.max(0, (s.camera.position.z + 40) / 40)));
+    }
     if (obe.current) {
       const rise = Math.min(1, t / 3.2); // rises from the dunes on load
       obe.current.position.y = -16 * Math.pow(1 - rise, 3);
@@ -139,7 +143,7 @@ export default function HeroScene() {
   });
   return (
     <group position={[0, 0, SCENE_Z.hero]}>
-      <group ref={sun} position={[14, 11, -55]}>
+      <group ref={sun} position={[34, 30, -150]} scale={2.1}>
         <mesh material={mats.glow}>
           <circleGeometry args={[7, 48]} />
         </mesh>

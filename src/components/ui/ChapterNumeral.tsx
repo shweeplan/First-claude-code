@@ -14,11 +14,11 @@ const D: Record<number, string> = {
   7: "M3 4h14L8 27",
 };
 
-export default function ChapterNumeral({ n, className = "h-7" }: { n: number; className?: string }) {
+export default function ChapterNumeral({ n, className = "h-7", compact = false }: { n: number; className?: string; compact?: boolean }) {
   const id = useId();
   const d = D[n] ?? D[1];
   return (
-    <svg viewBox="0 0 24 39" className={`w-auto ${className}`} role="img" aria-label={`Chapter ${n}`} fill="none" strokeLinejoin="miter" strokeLinecap="square">
+    <svg viewBox={compact ? "0 0 24 34" : "0 0 24 39"} className={`w-auto ${className}`} role="img" aria-label={`Chapter ${n}`} fill="none" strokeLinejoin="miter" strokeLinecap="square">
       <defs>
         <linearGradient id={`${id}g`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#fbe7ad" />
@@ -31,12 +31,14 @@ export default function ChapterNumeral({ n, className = "h-7" }: { n: number; cl
         <path d={d} stroke="#1c110a" strokeWidth="5.8" />
         <path d={d} stroke={`url(#${id}g)`} strokeWidth="3.4" />
         <path d={d} stroke="#fff6d8" strokeOpacity="0.75" strokeWidth="0.8" transform="translate(-0.7 -0.7)" />
+        {!compact && (<>
         <g strokeLinecap="butt">
           <path d="M1 32.5h18" stroke="#1c110a" strokeWidth="3" />
           <path d="M1 32.5h18" stroke={`url(#${id}g)`} strokeWidth="1.5" />
         </g>
         <circle cx="1" cy="32.5" r="1.3" fill="#fbe7ad" />
         <circle cx="19" cy="32.5" r="1.3" fill="#fbe7ad" />
+        </>)}
       </g>
     </svg>
   );

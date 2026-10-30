@@ -10,12 +10,13 @@ export const mats = {
   sandstone: new THREE.MeshStandardMaterial({ color: "#d9bc8a", roughness: 0.95, metalness: 0 }),
   sandDark: new THREE.MeshStandardMaterial({ color: "#a9824f", roughness: 1 }),
   gold: new THREE.MeshStandardMaterial({ color: "#e0aa45", roughness: 0.32, metalness: 0.9 }),
-  lapis: new THREE.MeshStandardMaterial({ color: "#1e3a8a", roughness: 0.18, metalness: 0.3 }),
+  lapis: new THREE.MeshStandardMaterial({ color: "#2a4fb0", roughness: 0.25, metalness: 0.3, emissive: "#14307a", emissiveIntensity: 0.7 }),
   turquoise: new THREE.MeshStandardMaterial({ color: "#2a9d96", roughness: 0.4, metalness: 0.1 }),
   carnelian: new THREE.MeshStandardMaterial({ color: "#b2432d", roughness: 0.6 }),
   linen: new THREE.MeshStandardMaterial({ color: "#f1e6cf", roughness: 1, side: THREE.DoubleSide }),
   dark: new THREE.MeshStandardMaterial({ color: "#2b1a0e", roughness: 1 }),
-  glow: new THREE.MeshBasicMaterial({ color: new THREE.Color("#ffd88a").multiplyScalar(2.4), toneMapped: false }),
+  glow: new THREE.MeshBasicMaterial({ color: new THREE.Color("#ffd88a").multiplyScalar(2.4), toneMapped: false, fog: false }),
+  flame: new THREE.MeshBasicMaterial({ color: new THREE.Color("#ff9a3c").multiplyScalar(1.6), toneMapped: false }),
   beam: new THREE.MeshBasicMaterial({
     color: "#ffd88a",
     transparent: true,
@@ -24,6 +25,7 @@ export const mats = {
     depthWrite: false,
     side: THREE.DoubleSide,
     toneMapped: false,
+    fog: false,
   }),
 };
 
@@ -55,6 +57,7 @@ export const SCENE_Z = {
   sell: -210,
   grow: -280,
   reports: -350,
+  who: -385,
   start: -420,
 } as const;
 export type SceneId = keyof typeof SCENE_Z;

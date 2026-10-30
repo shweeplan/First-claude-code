@@ -47,11 +47,11 @@ export default function HallScene() {
     <group position={[0, 0, SCENE_Z.start]}>
       <instancedMesh ref={shafts} args={[cylGeo, mats.sandstone, spots.length]} frustumCulled={false} />
       <instancedMesh ref={caps} args={[lotusCap, mats.gold, spots.length]} frustumCulled={false} />
-      <mesh position={[0, 0.02, -8]} scale={[40, 0.1, 80]} material={mats.dark} geometry={boxGeo} />
+      <mesh position={[0, 0.02, -26]} scale={[40, 0.1, 62]} material={mats.sandDark} geometry={boxGeo} />
       {[-6.2, 6.2].map((x) => (
         <group key={x} position={[x, 0, 6]}>
           <mesh position={[0, 2, 0]} scale={[0.15, 4, 0.15]} material={mats.dark} geometry={boxGeo} />
-          <mesh position={[0, 4.2, 0]} material={mats.glow}><sphereGeometry args={[0.35, 12, 12]} /></mesh>
+          <mesh position={[0, 4.2, 0]} material={mats.flame}><sphereGeometry args={[0.35, 12, 12]} /></mesh>
         </group>
       ))}
       <pointLight ref={torch1} position={[-6.2, 4.4, 6]} intensity={70} distance={30} color="#ff9a3c" />

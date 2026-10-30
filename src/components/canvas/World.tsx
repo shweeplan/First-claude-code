@@ -13,13 +13,14 @@ import SellScene from "./scenes/Sell";
 import GrowScene from "./scenes/Grow";
 import ReportsScene from "./scenes/Reports";
 import HallScene from "./scenes/Hall";
+import WhoScene from "./scenes/Who";
 
-const ORDER: SceneId[] = ["hero", "build", "traffic", "sell", "grow", "reports", "start"];
+const ORDER: SceneId[] = ["hero", "build", "traffic", "sell", "grow", "reports", "who", "start"];
 const ANCHOR_KEY: Record<SceneId, string> = {
-  hero: "hero", build: "build", traffic: "traffic", sell: "sell", grow: "grow", reports: "reports", start: "start",
+  hero: "hero", build: "build", traffic: "traffic", sell: "sell", grow: "grow", reports: "reports", who: "who", start: "start",
 };
 /** Sky colour per scene: dawn, day, gold afternoon, dusk, river sunset, night. */
-const SKY = ["#f1c58f", "#f3dcae", "#e9cf9e", "#e8b98a", "#c98d6d", "#7d5a63", "#120b07"].map((c) => new THREE.Color(c));
+const SKY = ["#f1c58f", "#f3dcae", "#e9cf9e", "#e8b98a", "#c98d6d", "#7d5a63", "#4a3340", "#120b07"].map((c) => new THREE.Color(c));
 
 /** Camera flies down a spline: two keyframes (enter/leave) per scene. */
 function useRail() {
@@ -169,6 +170,7 @@ export default function World({ tier, reduced, started, onFrame }: { tier: Tier;
             {!reduced && show("sell") && <SellScene />}
             {!reduced && show("grow") && <GrowScene />}
             {!reduced && show("reports") && <ReportsScene />}
+            {!reduced && show("who") && <WhoScene />}
             {!reduced && show("start") && <HallScene />}
             {full && (
               <EffectComposer multisampling={0}>
