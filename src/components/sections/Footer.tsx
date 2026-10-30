@@ -15,6 +15,7 @@ export default function Footer() {
             {chapters.map((c) => (
               <li key={c.id}><a className="underline-offset-4 hover:underline" href={`#${c.id}`}>{c.numeral}. {c.title}</a></li>
             ))}
+            <li><a className="underline-offset-4 hover:underline" href={`mailto:${links.email}`}>Email</a></li>
             <li><a className="underline-offset-4 hover:underline" href={links.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
             <li><a className="underline-offset-4 hover:underline" href={links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
           </ul>

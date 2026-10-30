@@ -20,7 +20,7 @@ export default function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 lg:px-8">
+      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-papyrus/80 px-5 py-3 backdrop-blur lg:bg-transparent lg:px-8 lg:py-4 lg:backdrop-blur-none">
         <a href="#hero" aria-label="SHWY Studio, back to top" className="rounded-full bg-papyrus/80 px-4 py-1 backdrop-blur">
           <Wordmark className="text-3xl" />
         </a>

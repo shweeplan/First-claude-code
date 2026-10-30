@@ -15,6 +15,7 @@ export async function POST(req: Request) {
 
   // PLACEHOLDER HANDLER: nothing is sent anywhere yet.
   // Connect an email service here (Resend, Postmark, SendGrid) or a CRM / Google Sheet webhook.
+  // Intended recipient: links.email in src/config/site.ts.
   // See README "Connect the contact form".
   console.log("[contact:placeholder] received submission", { business: data.business });
 

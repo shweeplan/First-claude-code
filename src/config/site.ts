@@ -5,6 +5,8 @@
  */
 
 export const links = {
+  // Public contact address. Other contact details below stay placeholders until confirmed.
+  email: "shweeplan@gmail.com",
   // PLACEHOLDER: confirm the Instagram handle.
   instagramHandle: "shwyystudio",
   instagram: "https://instagram.com/shwyystudio",

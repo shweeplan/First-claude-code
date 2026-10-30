@@ -26,8 +26,10 @@ export default function Start() {
             <h3 className="font-display text-3xl font-semibold">How we start</h3>
             <p className="mt-3 text-lg">{howWeWork.howWeStart}</p>
             <p className="mt-2 text-sand">{howWeWork.languages}</p>
+            <p className="mt-2"><a className="underline underline-offset-4" href={`mailto:${links.email}`}>{links.email}</a></p>
             <div className="mt-8 flex flex-wrap gap-4">
               <MagneticButton href={links.instagramDm} external>Instagram DM</MagneticButton>
+              <MagneticButton href={`mailto:${links.email}`} variant="ghost" className="!border-gold-light !text-gold-light hover:!bg-gold-light hover:!text-ink">Email</MagneticButton>
               <MagneticButton href={links.linkedin} external variant="ghost" className="!border-gold-light !text-gold-light hover:!bg-gold-light hover:!text-ink">LinkedIn</MagneticButton>
             </div>
           </div>
