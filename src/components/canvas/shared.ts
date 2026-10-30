@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { createContext, useContext } from "react";
 import type { Tier } from "@/lib/env";
+import { stoneTex, reliefTex, sandTex } from "./textures";
 
 export const TierContext = createContext<Tier>("full");
 export const useTier = () => useContext(TierContext);
@@ -61,3 +62,58 @@ export const SCENE_Z = {
   start: -420,
 } as const;
 export type SceneId = keyof typeof SCENE_Z;
+
+/** Box whose UVs follow its real size, so stone courses stay the same scale on every block. `density` = texture tiles per world unit. */
+export function texBox(w: number, h: number, d: number, density = 0.13) {
+  const g = new THREE.BoxGeometry(w, h, d);
+  const uv = g.attributes.uv as THREE.BufferAttribute;
+  // face order: +x, -x, +y, -y, +z, -z (4 vertices each)
+  const dims: [number, number][] = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+  for (let f = 0; f < 6; f++)
+    for (let i = 0; i < 4; i++) {
+      const k = f * 4 + i;
+      uv.setXY(k, uv.getX(k) * dims[f][0] * density, uv.getY(k) * dims[f][1] * density);
+    }
+  uv.needsUpdate = true;
+  return g;
+}
+
+/** Set by <World/> before scenes render: bump maps are a full-tier luxury. */
+export const quality = { bump: true };
+
+const matCache = new Map<string, THREE.MeshStandardMaterial>();
+const stdCache = (key: string, make: () => THREE.MeshStandardMaterial) => {
+  if (!matCache.has(key)) matCache.set(key, make());
+  return matCache.get(key)!;
+};
+
+/** Textured stone material (carved coursing + bump). Geometry should use texBox UVs, or pass repeat for curved shapes. */
+export function stoneMat(kind: "sandstone" | "limestone" = "sandstone", rx = 1, ry = 1, bump = 1.2) {
+  return stdCache(`stone-${kind}-${rx}-${ry}-${bump}-${quality.bump}`, () => {
+    const t = stoneTex(kind, rx, ry);
+    return new THREE.MeshStandardMaterial({ map: t.map, bumpMap: quality.bump ? t.bump : null, bumpScale: bump, roughness: 0.95 });
+  });
+}
+
+/** Hieroglyph relief material for obelisk faces and column shafts. */
+export function reliefMat(rx = 1, ry = 1, cols = 2, rows = 14) {
+  return stdCache(`relief-${rx}-${ry}-${cols}-${rows}-${quality.bump}`, () => {
+    const t = reliefTex(rx, ry, cols, rows);
+    return new THREE.MeshStandardMaterial({ map: t.map, bumpMap: quality.bump ? t.bump : null, bumpScale: 2.2, roughness: 0.9 });
+  });
+}
+
+export function sandMat(rx = 40, ry = 120) {
+  return stdCache(`sand-${rx}-${ry}-${quality.bump}`, () => {
+    const t = sandTex(rx, ry);
+    return new THREE.MeshStandardMaterial({ map: t.map, bumpMap: quality.bump ? t.bump : null, bumpScale: 1.5, roughness: 1, vertexColors: true });
+  });
+}
+
+/** Live sky colours, written by the camera rig each frame and read by the sky dome, fog and lights. */
+export const skyState = {
+  horizon: new THREE.Color("#f4b98a"),
+  zenith: new THREE.Color("#5f86c4"),
+  sunAmt: 1,
+  sunY: 0.2,
+};

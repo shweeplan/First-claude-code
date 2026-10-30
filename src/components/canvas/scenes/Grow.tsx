@@ -2,8 +2,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, boxGeo, coneGeo, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
+import { mats, boxGeo, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
+import { createWaterMat, updateWater } from "../water";
+import { Palms, PyramidMesh } from "../Props";
 
 const petalGeo = new THREE.ConeGeometry(0.5, 1, 6);
 petalGeo.translate(0, 0.5, 0);
@@ -25,20 +27,6 @@ const columnMat = new THREE.ShaderMaterial({
     }`,
 });
 
-/** Flood water for this chapter: lighter turquoise than the river so it reads as a rising Nile. */
-const floodMat = new THREE.ShaderMaterial({
-  transparent: true,
-  uniforms: { uTime: { value: 0 } },
-  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-  fragmentShader: `
-    varying vec2 vUv; uniform float uTime;
-    void main(){
-      float w = sin(vUv.x*70.+uTime*1.2)*sin(vUv.y*70.-uTime*.9)*.5+.5;
-      vec3 c = mix(vec3(.12,.52,.55), vec3(.55,.88,.8), w*.5);
-      gl_FragColor = vec4(c, .78);
-    }`,
-});
-
 const FIELD_COLORS = ["#6f8f3a", "#8aa24a", "#587a34"];
 
 export default function GrowScene() {
@@ -56,13 +44,15 @@ export default function GrowScene() {
   }, [tier]);
   const nMotes = tier === "full" ? 60 : 24;
   const perLotus = 8;
+  const floodMat = useMemo(() => createWaterMat({ deep: "#157079", shallow: "#7fd0c4", flood: true }), []);
+  const palms = useMemo<[number, number, number][]>(() => Array.from({ length: tier === "full" ? 10 : 4 }, (_, i) => [(i % 2 ? 1 : -1) * (13 + (i % 4) * 2.2), 0.3, 12 - Math.floor(i / 2) * 7]), [tier]);
   const fieldMats = useMemo(() => FIELD_COLORS.map((c) => new THREE.MeshStandardMaterial({ color: c, roughness: 1 })), []);
-  useEffect(() => () => fieldMats.forEach((m) => m.dispose()), [fieldMats]);
+  useEffect(() => () => { fieldMats.forEach((m) => m.dispose()); floodMat.dispose(); }, [fieldMats, floodMat]);
 
   useFrame((s) => {
     const t = s.clock.elapsedTime;
     columnMat.uniforms.uTime.value = t;
-    floodMat.uniforms.uTime.value = t;
+    updateWater(floodMat, t);
     const p = chapterProgress("grow");
     const rise = ease(clamp01(p * 1.2));
     if (flood.current) flood.current.position.y = 0.05 + rise * 0.5;
@@ -113,7 +103,8 @@ export default function GrowScene() {
         <cylinderGeometry args={[0.5, 1.1, 1, 24, 1, true]} />
       </mesh>
       <instancedMesh ref={motes} args={[new THREE.SphereGeometry(1, 6, 6), mats.glow, nMotes]} frustumCulled={false} />
-      <mesh position={[0, 0.6, -6]} rotation={[0, Math.PI / 4, 0]} scale={[4, 1.2, 4]} material={mats.sandstone} geometry={coneGeo} />
+      <PyramidMesh s={9} steps={10} position={[0, 0, -6]} />
+      <Palms spots={palms} />
       <pointLight position={[0, 8, -2]} intensity={120} distance={50} color="#9fe8d8" />
     </group>
   );

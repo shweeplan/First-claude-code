@@ -2,19 +2,20 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, boxGeo, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
+import { stoneMat, texBox, ease, clamp01, rng, useTier, SCENE_Z } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
-import { Obelisk } from "./Hero";
+import { Obelisk } from "../Props";
 
 type Block = { to: THREE.Vector3; from: THREE.Vector3; s: THREE.Vector3; d: number };
 
-/** A stepped temple whose blocks fly in and assemble as the chapter scrolls. */
+/** A stepped temple whose carved blocks fly in and assemble as the chapter scrolls. */
 export default function BuildScene() {
   const tier = useTier();
   const inst = useRef<THREE.InstancedMesh>(null);
   const lines = useRef<THREE.LineSegments>(null);
   const obe = useRef<THREE.Group>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const geo = useMemo(() => texBox(1, 1, 1, 0.45), []);
 
   const blocks = useMemo<Block[]>(() => {
     const r = rng(11);
@@ -29,7 +30,7 @@ export default function BuildScene() {
             to: new THREE.Vector3((x - n + 0.5) * bw, bh * (l + 0.5), (z - n / 2 + 0.5) * bw - 2),
             from: new THREE.Vector3((r() - 0.5) * 40, 22 + r() * 18, (r() - 0.5) * 30 - 2),
             s: new THREE.Vector3(bw * 0.96, bh * 0.96, bw * 0.96),
-            d: (l * 0.16 + r() * 0.12),
+            d: l * 0.16 + r() * 0.12,
           });
         }
     }
@@ -38,15 +39,12 @@ export default function BuildScene() {
 
   const lineGeo = useMemo(() => {
     const pts: number[] = [];
-    for (let i = -8; i <= 8; i += 2) {
-      pts.push(i, 0.06, -12, i, 0.06, 8, -14, 0.06, i - 2, 14, 0.06, i - 2);
-    }
+    for (let i = -8; i <= 8; i += 2) pts.push(i, 0.06, -12, i, 0.06, 8, -14, 0.06, i - 2, 14, 0.06, i - 2);
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
     return g;
   }, []);
-
-  useEffect(() => () => lineGeo.dispose(), [lineGeo]);
+  useEffect(() => () => { lineGeo.dispose(); geo.dispose(); }, [lineGeo, geo]);
 
   useFrame(() => {
     const p = chapterProgress("build");
@@ -63,15 +61,15 @@ export default function BuildScene() {
       });
       m.instanceMatrix.needsUpdate = true;
     }
-    if (obe.current) obe.current.position.y = -18 + 18 * ease(clamp01((p - 0.45) / 0.4));
+    if (obe.current) obe.current.position.y = -22 + 22 * ease(clamp01((p - 0.45) / 0.4));
     if (lines.current) (lines.current.material as THREE.LineBasicMaterial).opacity = 0.9 * (1 - ease(clamp01((p - 0.5) / 0.4)));
   });
 
   return (
-    <group position={[9, 0, SCENE_Z.build - 10]} scale={0.7}>
-      <instancedMesh ref={inst} args={[boxGeo, mats.sandstone, blocks.length]} frustumCulled={false} />
-      <group ref={obe} position={[10, -18, 2]}>
-        <Obelisk h={13} w={1.3} />
+    <group position={[3, 0, SCENE_Z.build - 22]} scale={0.8}>
+      <instancedMesh ref={inst} args={[geo, stoneMat("sandstone", 1, 1, 1.4), blocks.length]} castShadow receiveShadow frustumCulled={false} />
+      <group ref={obe} position={[10, -22, 2]}>
+        <Obelisk h={13} w={1.2} />
       </group>
       <lineSegments ref={lines} geometry={lineGeo}>
         <lineBasicMaterial color="#ebc77e" transparent opacity={0.9} toneMapped={false} />

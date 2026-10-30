@@ -2,9 +2,9 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mats, cylGeo, ease, clamp01, SCENE_Z } from "../shared";
+import { mats, cylGeo, ease, clamp01, reliefMat, SCENE_Z } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
-import { Obelisk } from "./Hero";
+import { Obelisk, PyramidMesh } from "../Props";
 
 const X = [-11, 0, 11];
 
@@ -39,13 +39,13 @@ export default function WhoScene() {
       </group>
       {/* startups: pyramid */}
       <group ref={set(1)} position={[X[1], -12, 0]}>
-        <mesh position={[0, 3.2, 0]} rotation={[0, Math.PI / 4, 0]} material={mats.sandstone}><coneGeometry args={[4.6, 6.4, 4]} /></mesh>
-        <mesh position={[0, 6.6, 0]} rotation={[0, Math.PI / 4, 0]} material={mats.gold}><coneGeometry args={[0.7, 0.9, 4]} /></mesh>
-        <mesh ref={disc(1)} position={[0, 9.6, 0]} material={mats.glow}><circleGeometry args={[1.8, 32]} /></mesh>
+        <PyramidMesh s={9} steps={12} />
+        <mesh position={[0, 8.0, 0]} rotation={[0, Math.PI / 4, 0]} material={mats.gold}><coneGeometry args={[0.5, 0.7, 4]} /></mesh>
+        <mesh ref={disc(1)} position={[0, 10.6, 0]} material={mats.glow}><circleGeometry args={[1.8, 32]} /></mesh>
       </group>
       {/* local businesses: lotus column */}
       <group ref={set(2)} position={[X[2], -12, 0]}>
-        <mesh position={[0, 4, 0]} scale={[0.9, 8, 0.9]} material={mats.sandstone} geometry={cylGeo} />
+        <mesh position={[0, 4, 0]} scale={[0.9, 8, 0.9]} material={reliefMat(2, 1, 3, 7)} geometry={cylGeo} castShadow />
         <mesh position={[0, 8.4, 0]} material={mats.gold}><sphereGeometry args={[1.2, 14, 10, 0, Math.PI * 2, 0, Math.PI / 1.6]} /></mesh>
         <mesh ref={disc(2)} position={[0, 11.4, 0]} material={mats.glow}><circleGeometry args={[1.8, 32]} /></mesh>
       </group>
