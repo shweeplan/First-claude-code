@@ -139,7 +139,7 @@ export default function HeroScene() {
   });
   return (
     <group position={[0, 0, SCENE_Z.hero]}>
-      <group ref={sun} position={[0, 9, -50]}>
+      <group ref={sun} position={[14, 11, -55]}>
         <mesh material={mats.glow}>
           <circleGeometry args={[7, 48]} />
         </mesh>
@@ -147,7 +147,7 @@ export default function HeroScene() {
           <circleGeometry args={[7, 48]} />
         </mesh>
       </group>
-      <group ref={obe} position={[0, 0, -18]}>
+      <group ref={obe} position={[12, 0, -18]}>
         <Obelisk h={16} w={1.6} />
         <mesh position={[0, 0.4, 0]} scale={[5, 0.8, 5]} material={mats.sandDark} geometry={boxGeo} />
         <mesh position={[0, 0.1, 0]} scale={[7, 0.2, 7]} material={mats.sandstone} geometry={boxGeo} />

@@ -93,7 +93,7 @@ function Rig({ reduced, onNear, onFrame }: { reduced: boolean; onNear: (near: Se
     // which scenes are near enough to mount
     const near = new Set<SceneId>();
     ORDER.forEach((id) => {
-      if (Math.abs(camera.position.z - SCENE_Z[id]) < 110) near.add(id);
+      if (Math.abs(camera.position.z - SCENE_Z[id]) < 85) near.add(id);
     });
     const key = [...near].join(",");
     if (key !== lastKey.current) {

@@ -16,7 +16,7 @@ export default function HallScene() {
   const rows = tier === "full" ? 7 : 4;
   const spots = useMemo(() => {
     const out: [number, number][] = [];
-    for (let r = 0; r < rows; r++) for (const x of [-9, -3.5, 3.5, 9]) out.push([x, 16 - r * 9]);
+    for (let r = 0; r < rows; r++) for (const x of [-9, -3.5, 3.5, 9]) out.push([x, 2 - r * 9]);
     return out;
   }, [rows]);
   const dummy = useMemo(() => new THREE.Object3D(), []);

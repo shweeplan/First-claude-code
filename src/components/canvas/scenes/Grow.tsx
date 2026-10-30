@@ -19,7 +19,7 @@ export default function GrowScene() {
   const lotus = useMemo(() => {
     const r = rng(33);
     return Array.from({ length: tier === "full" ? 14 : 7 }, () => ({
-      x: (r() - 0.5) * 22, z: 14 - r() * 34, s: 0.8 + r() * 0.8, d: r() * 0.4,
+      x: (r() - 0.5) * 22, z: -2 - r() * 34, s: 0.5 + r() * 0.6, d: r() * 0.4,
     }));
   }, [tier]);
   const perLotus = 8;
@@ -55,7 +55,7 @@ export default function GrowScene() {
       </mesh>
       <instancedMesh ref={petals} args={[petalGeo, mats.carnelian, lotus.length * perLotus]} frustumCulled={false} />
       <mesh ref={light} position={[0, 1, -6]} material={mats.beam}>
-        <cylinderGeometry args={[1.6, 2.4, 1, 24, 1, true]} />
+        <cylinderGeometry args={[0.7, 1.1, 1, 24, 1, true]} />
       </mesh>
       <mesh position={[0, 0.6, -6]} rotation={[0, Math.PI / 4, 0]} scale={[4, 1.2, 4]} material={mats.sandstone} geometry={coneGeo} />
       <pointLight position={[0, 8, -2]} intensity={120} distance={50} color="#9fe8d8" />

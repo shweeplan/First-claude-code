@@ -55,8 +55,9 @@ export default function BuildScene() {
       blocks.forEach((b, i) => {
         const t = ease(clamp01((p * 1.5 - b.d) / 0.55));
         dummy.position.lerpVectors(b.from, b.to, t);
+        const vis = p > 0.002 ? 1 : 0; // blocks stay hidden until the chapter starts
         dummy.rotation.set((1 - t) * 1.2, (1 - t) * 2, 0);
-        dummy.scale.copy(b.s);
+        dummy.scale.copy(b.s).multiplyScalar(vis);
         dummy.updateMatrix();
         m.setMatrixAt(i, dummy.matrix);
       });
@@ -67,7 +68,7 @@ export default function BuildScene() {
   });
 
   return (
-    <group position={[0, 0, SCENE_Z.build]}>
+    <group position={[9, 0, SCENE_Z.build - 10]} scale={0.7}>
       <instancedMesh ref={inst} args={[boxGeo, mats.sandstone, blocks.length]} frustumCulled={false} />
       <group ref={obe} position={[10, -18, 2]}>
         <Obelisk h={13} w={1.3} />

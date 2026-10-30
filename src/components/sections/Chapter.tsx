@@ -4,7 +4,7 @@ import Glyph from "../ui/Glyph";
 
 /** Editorial chapter: sticky title column, scrolling two-column feature rows. */
 export default function Chapter({ c, dark = false, children, after }: { c: C; dark?: boolean; children?: React.ReactNode; after?: React.ReactNode }) {
-  const panel = dark ? "bg-night/80 text-papyrus on-dark" : "bg-papyrus/92 text-ink";
+  const panel = dark ? "bg-night/80 text-papyrus on-dark" : "bg-papyrus/90 text-ink";
   return (
     <section id={c.id} data-chapter={c.id} aria-labelledby={`${c.id}-h`} className="relative min-h-[150vh] px-5 py-24 lg:pl-40 lg:pr-12">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
