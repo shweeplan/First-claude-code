@@ -5,6 +5,7 @@ import { mats, boxGeo, ease, clamp01, rng, useTier, SCENE_Z, useSceneFrame } fro
 import { chapterProgress } from "@/lib/scroll";
 import { createWaterMat, updateWater } from "../water";
 import { Palms, PyramidMesh } from "../Props";
+import { Birds, Crops, Rings, Sparks } from "./GrowLife";
 
 const petalGeo = new THREE.ConeGeometry(0.5, 1, 6);
 petalGeo.translate(0, 0.5, 0);
@@ -54,7 +55,10 @@ export default function GrowScene() {
     updateWater(floodMat, t);
     const p = chapterProgress("grow");
     const rise = ease(clamp01(p * 1.2));
-    if (flood.current) flood.current.position.y = 0.05 + rise * 0.5;
+    // the flood peaks early, then recedes and leaves green fields behind
+    const peak = ease(clamp01(p * 2.2));
+    const recede = ease(clamp01((p - 0.5) / 0.4));
+    if (flood.current) flood.current.position.y = 0.05 + peak * 0.55 - recede * 0.42;
     if (light.current) {
       const h = 2 + rise * 46;
       light.current.scale.set(1, h, 1);
@@ -104,6 +108,10 @@ export default function GrowScene() {
       <instancedMesh ref={motes} args={[new THREE.SphereGeometry(1, 6, 6), mats.glow, nMotes]} frustumCulled={false} />
       <PyramidMesh s={9} steps={10} position={[0, 0, -6]} />
       <Palms spots={palms} />
+      <Crops />
+      <Birds />
+      <Rings />
+      <Sparks />
       <pointLight position={[0, 8, -2]} intensity={120} distance={50} color="#9fe8d8" />
     </group>
   );

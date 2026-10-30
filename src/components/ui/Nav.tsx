@@ -21,8 +21,8 @@ export default function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-papyrus/92 px-5 py-3 lg:bg-transparent lg:px-8 lg:py-4 ">
-        <a href="#hero" aria-label="SHWY Studio, back to top" className="rounded-full bg-papyrus/92 px-4 py-1">
+      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-papyrus/90 px-5 py-3 lg:bg-transparent lg:px-8 lg:py-4 ">
+        <a href="#hero" aria-label="SHWY Studio, back to top" className="rounded-full bg-papyrus/90 px-4 py-1">
           <Wordmark className="text-3xl" />
         </a>
         <MagneticButton href="#start" className="!min-h-10 !px-5 !py-2 text-xs shadow-lg">
@@ -31,7 +31,7 @@ export default function Nav() {
       </header>
 
       <nav aria-label="Chapters" className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 lg:block">
-        <ol className="space-y-1 rounded-2xl bg-papyrus/92 p-2">
+        <ol className="space-y-1 rounded-2xl bg-papyrus/90 p-2">
           {chapters.map((c) => (
             <li key={c.id}>
               <a
