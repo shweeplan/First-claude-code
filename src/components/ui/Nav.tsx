@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { chapters } from "@/config/site";
 import MagneticButton from "./MagneticButton";
 import Wordmark from "./Wordmark";
-import EgyptianNumeral from "./EgyptianNumeral";
+import ChapterNumeral from "./ChapterNumeral";
 
 /** Sticky chapter nav (side on desktop, bottom strip on mobile) plus a persistent CTA. */
 export default function Nav() {
@@ -39,7 +39,7 @@ export default function Nav() {
                 aria-current={active === c.id ? "true" : undefined}
                 className={`group flex items-center gap-3 rounded-xl px-3 py-1.5 font-display text-sm transition-colors ${active === c.id ? "bg-brown text-gold-light" : "text-brown hover:bg-sand"}`}
               >
-                <span className="flex w-8 justify-end"><EgyptianNumeral n={c.n} className="h-5" /></span>
+                <span className="flex w-8 justify-end"><ChapterNumeral n={c.n} className="h-5" /></span>
                 <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:opacity-100">
                   {c.title}
                 </span>
@@ -58,7 +58,7 @@ export default function Nav() {
                 aria-current={active === c.id ? "true" : undefined}
                 className={`block rounded-lg px-3 py-1.5 font-display text-sm font-semibold ${active === c.id ? "bg-brown text-gold-light" : "text-brown"}`}
               >
-                <EgyptianNumeral n={c.n} className="h-5" />
+                <ChapterNumeral n={c.n} className="h-5" />
               </a>
             </li>
           ))}
