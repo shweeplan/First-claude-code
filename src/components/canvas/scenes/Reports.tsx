@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import { mats, boxGeo, cylGeo, ease, clamp01, useTier, SCENE_Z, useSceneFrame } from "../shared";
+import { mats, boxGeo, cylGeo, ease, clamp01, SCENE_Z, useSceneFrame } from "../shared";
 import { chapterProgress } from "@/lib/scroll";
 import { paintedWallTex } from "../textures";
 
@@ -9,7 +9,6 @@ const bars = [0.35, 0.5, 0.42, 0.7, 0.62, 0.9];
 
 /** A seated scribe beside a papyrus that unrolls into a simple, illustrative chart. */
 export default function ReportsScene() {
-  const tier = useTier();
   const sheet = useRef<THREE.Mesh>(null);
   const roll = useRef<THREE.Mesh>(null);
   const bar = useRef<THREE.Group>(null);
@@ -50,7 +49,6 @@ export default function ReportsScene() {
         <mesh position={[0, 3.4, 0]} scale={[1.3, 0.5, 1.2]} material={mats.dark} geometry={boxGeo} />
         <mesh position={[0, 2.2, 0.55]} scale={[1.2, 0.2, 0.2]} material={mats.gold} geometry={boxGeo} />
       </group>
-      <pointLight position={[0, 9, 10]} intensity={100} distance={45} color={tier === "full" ? "#ffc27a" : "#ffd9a0"} />
     </group>
   );
 }

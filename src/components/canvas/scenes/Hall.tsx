@@ -59,8 +59,6 @@ export default function HallScene() {
   const bases = useRef<THREE.InstancedMesh>(null);
   const rings = useRef<THREE.InstancedMesh>(null);
   const flames = useRef<(THREE.Mesh | null)[]>([]);
-  const torch1 = useRef<THREE.PointLight>(null);
-  const torch2 = useRef<THREE.PointLight>(null);
   const rows = tier === "full" ? 7 : 4;
   const spots = useMemo(() => {
     const out: [number, number][] = [];
@@ -90,8 +88,6 @@ export default function HallScene() {
 
   useSceneFrame((s) => {
     const t = s.clock.elapsedTime;
-    if (torch1.current) torch1.current.intensity = 70 + Math.sin(t * 9) * 8 + Math.sin(t * 17) * 5;
-    if (torch2.current) torch2.current.intensity = 70 + Math.sin(t * 11 + 2) * 8 + Math.sin(t * 19) * 5;
     flames.current.forEach((f, i) => {
       if (!f) return;
       const k = 1 + Math.sin(t * 10 + i * 2) * 0.18 + Math.sin(t * 23 + i) * 0.1;
@@ -103,7 +99,7 @@ export default function HallScene() {
   return (
     <group position={[0, 0, SCENE_Z.start]}>
       <instancedMesh ref={shafts} args={[cylGeo, reliefMat(2, 1, 3, 7), spots.length]} castShadow receiveShadow frustumCulled={false} />
-      <instancedMesh ref={caps} args={[capGeo, mats.gold, spots.length]} castShadow frustumCulled={false} />
+      <instancedMesh ref={caps} args={[capGeo, mats.gold, spots.length]} frustumCulled={false} />
       <instancedMesh ref={bases} args={[cylGeo, floor, spots.length]} receiveShadow frustumCulled={false} />
       <instancedMesh ref={rings} args={[cylGeo, mats.turquoise, spots.length]} frustumCulled={false} />
       <mesh position={[0, 0.02, -26]} geometry={texBox(40, 0.1, 62, 0.16)} material={floor} receiveShadow />
@@ -122,8 +118,6 @@ export default function HallScene() {
         </group>
       ))}
       <Embers count={tier === "full" ? 80 : 28} positions={TORCHES} />
-      <pointLight ref={torch1} position={[-6.2, 5, 6]} intensity={70} distance={30} color="#ff9a3c" />
-      <pointLight ref={torch2} position={[6.2, 5, 6]} intensity={70} distance={30} color="#ff9a3c" />
     </group>
   );
 }

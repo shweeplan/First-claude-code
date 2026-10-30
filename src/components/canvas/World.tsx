@@ -7,6 +7,7 @@ import { ActiveContext, TierContext, SCENE_Z, skyState, quality, type SceneId } 
 import { scrollState } from "@/lib/scroll";
 import type { Tier } from "@/lib/env";
 import Sky from "./Sky";
+import { RIGS } from "./lights";
 import HeroScene, { Dunes } from "./scenes/Hero";
 import Skyline from "./scenes/Skyline";
 import BuildScene from "./scenes/Build";
@@ -165,6 +166,73 @@ function Adaptive({ onSlow }: { onSlow: () => void }) {
   return null;
 }
 
+/** The fixed pool of 3 point lights, glued to whichever scene the camera is nearest. */
+function LightPool() {
+  const refs = [useRef<THREE.PointLight>(null), useRef<THREE.PointLight>(null), useRef<THREE.PointLight>(null)];
+  const target = useMemo(() => new THREE.Vector3(), []);
+  const color = useMemo(() => new THREE.Color(), []);
+  useFrame(({ camera, clock }) => {
+    let best: SceneId = "hero";
+    let bd = Infinity;
+    for (const id of ORDER) {
+      const d = Math.abs(camera.position.z - SCENE_Z[id]);
+      if (d < bd) { bd = d; best = id; }
+    }
+    const rig = RIGS[best];
+    const t = clock.elapsedTime;
+    refs.forEach((ref, k) => {
+      const l = ref.current;
+      if (!l) return;
+      const slot = rig[k];
+      if (slot) {
+        target.set(...slot.p);
+        if (best === "hero" && k === 0) target.set(scrollState.pointer.x * 10, 6 + scrollState.pointer.y * 4, 6);
+        const flick = slot.flicker ? 1 + Math.sin(t * 9 + k * 2) * 0.1 + Math.sin(t * 17 + k) * 0.06 : 1;
+        l.position.lerp(target, 0.08);
+        l.intensity += (slot.i * flick - l.intensity) * 0.08;
+        l.distance += (slot.d - l.distance) * 0.08;
+        l.color.lerp(color.set(slot.c), 0.08);
+      } else {
+        l.intensity += (0 - l.intensity) * 0.08;
+      }
+    });
+  });
+  return <>{refs.map((r, i) => <pointLight key={i} ref={r} intensity={0} distance={40} />)}</>;
+}
+
+/** `?debug` overlay: fps, draw calls, triangles, textures, shader programs. Screenshot it and send it over. */
+function DebugStats({ tier, active }: { tier: string; active: string }) {
+  const { gl, scene } = useThree();
+  const el = useRef<HTMLDivElement | null>(null);
+  const acc = useRef({ t: 0, n: 0 });
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  useEffect(() => {
+    const d = document.createElement("div");
+    d.style.cssText = "position:fixed;left:8px;bottom:60px;z-index:9999;font:12px/1.4 monospace;color:#0f0;background:rgba(0,0,0,.75);padding:6px 8px;border-radius:6px;white-space:pre;pointer-events:none";
+    document.body.appendChild(d);
+    el.current = d;
+    return () => d.remove();
+  }, []);
+  useFrame((_, dt) => {
+    const a = acc.current;
+    a.t += dt;
+    a.n++;
+    if (a.t < 0.5 || !el.current) return;
+    let lights = 0;
+    scene.traverseVisible((o) => { if ((o as THREE.Light).isLight) lights++; });
+    const i = gl.info;
+    el.current.textContent =
+      `fps ${(a.n / a.t).toFixed(0)}  tier ${tier}\n` +
+      `calls ${i.render.calls}  tris ${(i.render.triangles / 1000).toFixed(0)}k\n` +
+      `geo ${i.memory.geometries}  tex ${i.memory.textures}  prog ${i.programs?.length ?? "?"}\n` +
+      `lights ${lights}  active ${activeRef.current}`;
+    a.t = 0;
+    a.n = 0;
+  });
+  return null;
+}
+
 /** Hemisphere fill plus a low sun that casts shadows (desktop tier only) and tracks the camera. */
 function Lights({ shadows }: { shadows: boolean }) {
   const sun = useRef<THREE.DirectionalLight>(null);
@@ -211,6 +279,7 @@ export default function World({ tier: tierIn, reduced, started, onFrame }: { tie
   const [near, setNear] = useState<Set<SceneId>>(new Set(ORDER));
   const [slow, setSlow] = useState(false);
   const [lowRes, setLowRes] = useState(false);
+  const [debug] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debug"));
   const tier: Tier = slow ? "lite" : tierIn;
   const full = tier === "full" && !reduced;
   quality.bump = full; // read by materials created while scenes render
@@ -245,6 +314,8 @@ export default function World({ tier: tierIn, reduced, started, onFrame }: { tie
           <Suspense fallback={null}>
             <Sky />
             <Lights shadows={full} />
+            <LightPool />
+            {debug && <DebugStats tier={tier + (lowRes ? "/lowres" : "")} active={[...near].join(",")} />}
             {!reduced && !lowRes && <Adaptive key={tier} onSlow={() => (tier === "full" ? setSlow(true) : setLowRes(true))} />}
             <Rig reduced={reduced} started={started} onNear={setNear} onFrame={onFrame} />
             <Dunes />

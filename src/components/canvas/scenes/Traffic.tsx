@@ -136,7 +136,6 @@ export default function TrafficScene() {
         <Colossus position={[4.2, 0, 7]} s={1.5} />
         <Obelisk position={[-16, 0, 8]} h={15} w={1.2} />
       </group>
-      <pointLight position={[0, 14, -34]} intensity={140} distance={60} color="#ffcf8a" />
     </group>
   );
 }

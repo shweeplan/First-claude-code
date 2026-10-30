@@ -23,7 +23,7 @@ export function Crops() {
   const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.9 }), []);
   const crops = useMemo(() => {
     const r = rng(91);
-    const n = tier === "full" ? 420 : 140;
+    const n = tier === "full" ? 240 : 90;
     return Array.from({ length: n }, () => ({
       x: FIELD_X[Math.floor(r() * 4)] + (r() - 0.5) * 6.4,
       z: -28 + r() * 40,
@@ -40,8 +40,11 @@ export function Crops() {
   }, [crops]);
   useEffect(() => () => { geo.dispose(); mat.dispose(); }, [geo, mat]);
 
+  const lastP = useRef(-1);
   useSceneFrame(() => {
     const p = chapterProgress("grow");
+    if (Math.abs(p - lastP.current) < 0.002) return; // growth only changes when scrolling
+    lastP.current = p;
     crops.forEach((c, i) => {
       const t = ease(clamp01((p - c.d) / 0.25));
       dummy.position.set(c.x, 0.25, c.z);
@@ -52,7 +55,7 @@ export function Crops() {
     });
     mesh.current!.instanceMatrix.needsUpdate = true;
   });
-  return <instancedMesh ref={mesh} args={[geo, mat, crops.length]} castShadow frustumCulled={false} />;
+  return <instancedMesh ref={mesh} args={[geo, mat, crops.length]} frustumCulled={false} />;
 }
 
 /** White ibis-like birds circling the light column. The flock quickens on the email step. */
@@ -113,7 +116,7 @@ export function Rings() {
   const geo = useMemo(() => new THREE.RingGeometry(0.96, 1, 72), []);
   const mats = useMemo(
     () =>
-      Array.from({ length: 4 }, (_, i) =>
+      Array.from({ length: 2 }, (_, i) =>
         new THREE.MeshBasicMaterial({ color: i % 2 ? "#9fe8d8" : "#ffd88a", transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, side: THREE.DoubleSide }),
       ),
     [],
@@ -126,7 +129,7 @@ export function Rings() {
     const t = s.clock.elapsedTime;
     refs.current.forEach((m, i) => {
       if (!m) return;
-      const u = (t / 4 + i / 4) % 1;
+      const u = (t / 4 + i / 2) % 1;
       m.scale.setScalar(1 + u * 34);
       mats[i].opacity = Math.pow(1 - u, 1.6) * amp.current;
     });
@@ -168,7 +171,7 @@ export function Sparks() {
           float sp = (2. + aSeed.z * 6.) * (.4 + uAmt);
           vec3 p = position + vec3(cos(a)*sp*t*.5, (7. + aSeed.z*9.)*(.5 + uAmt*.7)*t - 4.*t*t, sin(a)*sp*t*.5);
           vec4 mv = modelViewMatrix * vec4(p, 1.);
-          gl_PointSize = (1. - t/2.4) * (40. + 70.*uAmt) / -mv.z;
+          gl_PointSize = (1. - t/2.4) * (26. + 40.*uAmt) / -mv.z;
           vA = (1. - t/2.4) * (.25 + .75*uAmt);
           gl_Position = projectionMatrix * mv;
         }`,

@@ -115,18 +115,6 @@ function Dust({ count, z0, z1 }: { count: number; z0: number; z1: number }) {
 }
 export { Dust };
 
-/** Pointer-reactive warm light for the hero. */
-function CursorLight() {
-  const ref = useRef<THREE.PointLight>(null);
-  useSceneFrame(() => {
-    if (!ref.current) return;
-    const { x, y } = scrollState.pointer;
-    ref.current.position.x += (x * 10 - ref.current.position.x) * 0.06;
-    ref.current.position.y += (6 + y * 4 - ref.current.position.y) * 0.06;
-  });
-  return <pointLight ref={ref} position={[0, 6, 6]} intensity={60} distance={40} color="#ffcf8a" />;
-}
-
 const PALMS: [number, number, number][] = [
   [-22, 0, -16], [-25, 0, -12], [-20, 0, -9], [27, 0, -22], [24, 0, -26],
 ];
@@ -153,7 +141,6 @@ export default function HeroScene() {
       <PyramidMesh s={16} steps={tier === "full" ? 16 : 10} position={[44, -0.2, -52]} rotation={[0, 0.1, 0]} />
       <Palms spots={PALMS} />
       <Dust count={tier === "full" ? 1400 : 380} z0={20} z1={-440} />
-      {tier === "full" && <CursorLight />}
     </group>
   );
 }

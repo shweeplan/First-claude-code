@@ -73,7 +73,6 @@ export default function BuildScene() {
       <lineSegments ref={lines} geometry={lineGeo}>
         <lineBasicMaterial color="#ebc77e" transparent opacity={0.9} toneMapped={false} />
       </lineSegments>
-      <pointLight position={[0, 12, 10]} intensity={80} distance={50} color="#ffd9a0" />
     </group>
   );
 }

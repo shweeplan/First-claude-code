@@ -48,7 +48,6 @@ export default function WhoScene() {
         <mesh position={[0, 8.4, 0]} material={mats.gold}><sphereGeometry args={[1.2, 14, 10, 0, Math.PI * 2, 0, Math.PI / 1.6]} /></mesh>
         <mesh ref={disc(2)} position={[0, 11.4, 0]} material={mats.glow}><circleGeometry args={[1.8, 32]} /></mesh>
       </group>
-      <pointLight position={[0, 10, 12]} intensity={100} distance={50} color="#ffc680" />
     </group>
   );
 }

@@ -105,9 +105,6 @@ export default function SellScene() {
         <PylonTower position={[7, 0, 0]} w={6} h={13} d={3.5} />
         <mesh position={[0, 5, -0.5]} scale={[8, 10, 0.3]} material={mats.beam} geometry={boxGeo} />
       </group>
-      <pointLight position={[-6, 3, 4]} intensity={70} distance={26} color="#ff9a4a" />
-      <pointLight position={[6, 3, -8]} intensity={70} distance={26} color="#ff9a4a" />
-      <pointLight position={[0, 10, 8]} intensity={80} distance={55} color="#ffc680" />
     </group>
   );
 }

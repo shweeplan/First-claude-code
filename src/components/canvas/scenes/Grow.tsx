@@ -15,7 +15,7 @@ const columnMat = new THREE.ShaderMaterial({
   transparent: true,
   depthWrite: false,
   blending: THREE.AdditiveBlending,
-  side: THREE.DoubleSide,
+  side: THREE.FrontSide,
   uniforms: { uTime: { value: 0 } },
   vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
   fragmentShader: `
@@ -112,7 +112,6 @@ export default function GrowScene() {
       <Birds />
       <Rings />
       <Sparks />
-      <pointLight position={[0, 8, -2]} intensity={120} distance={50} color="#9fe8d8" />
     </group>
   );
 }
