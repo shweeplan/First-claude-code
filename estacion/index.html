@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estación Ambiental</title>
+<style>
+  :root {
+    --bg: #0e0f11;
+    --panel: #15171a;
+    --line: #26292e;
+    --line-soft: #1d2024;
+    --txt: #e6e4df;
+    --mute: #7d7f84;
+    --temp: #e0a458;   /* muted amber */
+    --hum: #7fa7c9;    /* steel blue */
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--txt); min-height: 100vh;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    padding: 32px 20px 48px; -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1040px; margin: 0 auto; display: grid; gap: 16px; }
+  .label { font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+
+  /* ---------- header ---------- */
+  header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;
+           padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -.01em; margin-top: 6px; }
+  .meta { display: flex; gap: 24px; align-items: flex-end; font-family: var(--mono); font-size: .8rem; color: var(--mute); }
+  #clock { color: var(--txt); font-size: 1.1rem; }
+  #status { display: flex; align-items: center; gap: 8px; }
+  #status i { width: 7px; height: 7px; border-radius: 50%; background: #6fae7f; }
+  #status.demo i { background: #c9a227; }
+  #status.error i { background: #c95b5b; }
+
+  /* ---------- readouts ---------- */
+  .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 820px) { .readouts { grid-template-columns: 1fr 1fr; } .state { grid-column: 1 / -1; } }
+  @media (max-width: 540px) { .readouts { grid-template-columns: 1fr; } }
+  .readout { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 14px; }
+  .readout-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .swatch { display: inline-block; width: 8px; height: 8px; margin-right: 8px; vertical-align: 1px; }
+  .value { font-family: var(--mono); font-size: 3.2rem; font-weight: 500; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .value small { font-size: 1.1rem; color: var(--mute); margin-left: 4px; letter-spacing: 0; }
+  .delta { font-family: var(--mono); font-size: .75rem; color: var(--mute); }
+
+  /* linear scale with ticks */
+  .scale { position: relative; height: 22px; }
+  .scale .rail { position: absolute; left: 0; right: 0; top: 8px; height: 2px; background: var(--line); }
+  .scale .fill { position: absolute; left: 0; top: 8px; height: 2px; width: 0; transition: width .8s ease; }
+  .scale .ticks { position: absolute; inset: 0 0 auto 0; height: 18px;
+    background-image: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 12.5%); }
+  .scale .marker { position: absolute; top: 2px; width: 2px; height: 14px; background: var(--txt); left: 0; transition: left .8s ease; }
+  .scale-ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: .65rem; color: var(--mute); margin-top: -4px; }
+
+  /* state panel */
+  .state { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+  #stateText { font-size: 1.35rem; font-weight: 600; }
+  #stateSub { font-size: .85rem; color: var(--mute); margin-top: 4px; line-height: 1.4; }
+  .minmax { display: grid; grid-template-columns: auto 1fr 1fr; gap: 6px 14px; font-family: var(--mono); font-size: .82rem;
+            border-top: 1px solid var(--line-soft); padding-top: 14px; margin-top: auto; font-variant-numeric: tabular-nums; }
+  .minmax span { color: var(--mute); }
+
+  /* ---------- chart ---------- */
+  .section { padding: 20px 22px; }
+  .section-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  h2 { font-size: 1rem; font-weight: 600; }
+  .legend { display: flex; gap: 18px; font-family: var(--mono); font-size: .72rem; color: var(--mute); }
+  .legend b { display: inline-block; width: 14px; height: 2px; margin-right: 7px; vertical-align: middle; }
+  #chart { width: 100%; height: 240px; display: block; }
+
+  /* ---------- table ---------- */
+  table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .82rem; font-variant-numeric: tabular-nums; }
+  th { text-align: left; font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); font-weight: 500;
+       padding: 0 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 10px 8px; border-bottom: 1px solid var(--line-soft); color: #b9b8b4; }
+  tbody tr:first-child td { color: var(--txt); }
+  td.num, th.num { text-align: right; }
+  @media (max-width: 540px) { .hide-sm { display: none; } }
+
+  footer { font-family: var(--mono); font-size: .7rem; color: var(--mute); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding-top: 6px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <p class="label" id="station">ESP8266 / Estación</p>
+      <h1>Estación Ambiental</h1>
+    </div>
+    <div class="meta">
+      <span id="status"><i></i><span id="statusText">Conectando</span></span>
+      <span id="clock">--:--:--</span>
+    </div>
+  </header>
+
+  <section class="readouts">
+    <div class="panel readout">
+      <div class="readout-head">
+        <span class="label"><span class="swatch" style="background:var(--temp)"></span>Temperatura</span>
+        <span class="delta" id="tDelta"></span>
+      </div>
+      <div class="value" id="temp">--.-<small>°C</small></div>
+      <div>
+        <div class="scale"><div class="ticks"></div><div class="rail"></div><div class="fill" id="tFill" style="background:var(--temp)"></div><div class="marker" id="tMark"></div></div>
+        <div class="scale-ends"><span>0</span><span>10</span><span>20</span><span>30</span><span>40 °C</span></div>
+      </div>
+    </div>
+
+    <div class="panel readout">
+      <div class="readout-head">
+        <span class="label"><span class="swatch" style="background:var(--hum)"></span>Humedad relativa</span>
+        <span class="delta" id="hDelta"></span>
+      </div>
+      <div class="value" id="hum">--<small>%</small></div>
+      <div>
+        <div class="scale"><div class="ticks"></div><div class="rail"></div><div class="fill" id="hFill" style="background:var(--hum)"></div><div class="marker" id="hMark"></div></div>
+        <div class="scale-ends"><span>0</span><span>25</span><span>50</span><span>75</span><span>100 %</span></div>
+      </div>
+    </div>
+
+    <div class="panel state">
+      <span class="label">Estado</span>
+      <div>
+        <div id="stateText">Sin datos</div>
+        <div id="stateSub">Esperando la primera medición.</div>
+      </div>
+      <div class="minmax">
+        <span></span><span>Mín</span><span>Máx</span>
+        <span>Temp.</span><b id="tMin">--</b><b id="tMax">--</b>
+        <span>Hum.</span><b id="hMin">--</b><b id="hMax">--</b>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel section">
+    <div class="section-head">
+      <h2>Tendencia</h2>
+      <div class="legend"><span><b style="background:var(--temp)"></b>Temperatura °C</span><span><b style="background:var(--hum)"></b>Humedad %</span></div>
+    </div>
+    <canvas id="chart"></canvas>
+  </section>
+
+  <section class="panel section">
+    <div class="section-head">
+      <h2>Historial de mediciones</h2>
+      <span class="label">Últimas 10</span>
+    </div>
+    <table>
+      <thead><tr><th class="hide-sm">Fecha</th><th>Hora</th><th class="num">Temperatura</th><th class="num">Humedad</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+
+  <footer><span id="foot">Intervalo 5 s</span><span id="host"></span></footer>
+</main>
+
+<script>
+  const MAX_POINTS = 10;      // readings kept in chart and table
+  const INTERVAL_MS = 5000;   // DHT11 needs >= 1 s, DHT22 >= 2 s
+
+  // Opened as a local file (file://) there is no ESP8266, so show simulated data.
+  const DEMO = location.protocol === 'file:';
+  let demoT = 23.5, demoH = 52;
+
+  const history = [];
+  const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  function setScale(fill, mark, frac) {
+    const p = clamp(frac, 0, 1) * 100 + '%';
+    fill.style.width = p; mark.style.left = `calc(${p} - 1px)`;
+  }
+
+  function setDelta(el, now, prev, unit, digits) {
+    if (prev === undefined) { el.textContent = ''; return; }
+    const d = Number((now - prev).toFixed(digits));
+    el.textContent = d === 0 ? '±0' + unit : (d > 0 ? '+' : '−') + Math.abs(d).toFixed(digits) + unit;
+  }
+
+  function state(t, h) {
+    if (t >= 30) return ['Calor', 'Temperatura por encima de 30 °C.'];
+    if (t <= 16) return ['Frío', 'Temperatura por debajo de 16 °C.'];
+    const noH = h == null;   // no humidity sensor: skip humidity rules
+    if (!noH && h >= 70) return ['Muy húmedo', 'Humedad por encima del 70 %. Riesgo de condensación.'];
+    if (!noH && h <= 30) return ['Aire seco', 'Humedad por debajo del 30 %.'];
+    if (t >= 20 && t <= 26 && (noH || (h >= 40 && h <= 60))) return ['Confortable', noH ? 'Dentro de 20–26 °C.' : 'Dentro de 20–26 °C y 40–60 % HR.'];
+    return ['Aceptable', 'Cerca del rango de confort.'];
+  }
+
+  function setStatus(text, mode) { $('statusText').textContent = text; $('status').className = mode; }
+
+  // ---------- canvas chart (no libraries, works without internet) ----------
+  function drawChart() {
+    const c = $('chart'), dpr = window.devicePixelRatio || 1;
+    const w = c.clientWidth, h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    const g = c.getContext('2d');
+    g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+
+    const pad = { l: 38, r: 38, t: 10, b: 28 };
+    const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+    const data = [...history].reverse();
+    const cT = css('--temp'), cH = css('--hum'), mute = css('--mute');
+
+    g.font = '10.5px ui-monospace, Menlo, Consolas, monospace';
+    g.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = Math.round(pad.t + ph * i / 4) + .5;
+      g.strokeStyle = i === 4 ? css('--line') : css('--line-soft');
+      g.beginPath(); g.moveTo(pad.l, y); g.lineTo(w - pad.r, y); g.stroke();
+    }
+    if (!data.length) return;
+
+    const temps = data.map(d => d.temp);
+    const tMin = Math.floor(Math.min(...temps) - 1), tMax = Math.ceil(Math.max(...temps) + 1);
+    const x = i => pad.l + (data.length === 1 ? pw / 2 : pw * i / (data.length - 1));
+    const yT = v => pad.t + ph * (1 - (v - tMin) / (tMax - tMin));
+    const yH = v => pad.t + ph * (1 - v / 100);
+
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.t + ph * i / 4 + 3.5;
+      g.fillStyle = cT; g.textAlign = 'right';
+      g.fillText((tMax - (tMax - tMin) * i / 4).toFixed(1), pad.l - 8, y);
+      g.fillStyle = cH; g.textAlign = 'left';
+      g.fillText(String(100 - 25 * i), w - pad.r + 8, y);
+    }
+    g.fillStyle = mute; g.textAlign = 'center';
+    const step = pw / Math.max(data.length - 1, 1) < 72 ? 2 : 1;
+    data.forEach((d, i) => { if ((data.length - 1 - i) % step === 0) g.fillText(d.time, x(i), h - 8); });
+
+    function line(vals, toY, color) {
+      const pts = vals.map((v, i) => [x(i), toY(v)]);
+      g.strokeStyle = color; g.lineWidth = 1.5; g.lineJoin = 'round';
+      g.beginPath();
+      pts.forEach(([px, py], i) => i ? g.lineTo(px, py) : g.moveTo(px, py));
+      g.stroke();
+      pts.forEach(([px, py], i) => {
+        const last = i === pts.length - 1;
+        g.fillStyle = last ? color : css('--panel');
+        g.strokeStyle = color; g.lineWidth = 1.5;
+        g.beginPath(); g.rect(px - 3, py - 3, 6, 6); g.fill(); g.stroke();
+      });
+    }
+    if (data[0].hum != null) line(data.map(d => d.hum), yH, cH);
+    line(temps, yT, cT);
+  }
+
+  // ---------- data ----------
+  async function getReading() {
+    if (DEMO) {
+      demoT += (Math.random() - .5) * .5;
+      demoH += (Math.random() - .5) * 2;
+      return { temp: demoT, hum: clamp(demoH, 0, 100), name: 'Demo' };
+    }
+    const res = await fetch('/data', { cache: 'no-store' });
+    if (!res.ok) throw new Error('sensor');
+    return res.json();
+  }
+
+  async function update() {
+    let d;
+    try { d = await getReading(); }
+    catch (e) { setStatus('Sin datos del sensor', 'error'); return; }
+
+    const now = new Date(), prev = history[0];
+    history.unshift({
+      date: now.toLocaleDateString('es-ES'),
+      time: now.toLocaleTimeString('es-ES'),
+      temp: Number(d.temp), hum: d.hum == null ? null : Number(d.hum)
+    });
+    if (history.length > MAX_POINTS) history.pop();
+    const cur = history[0];
+
+    if (d.name) { $('station').textContent = 'ESP8266 / ' + d.name; document.title = d.name + ' · Estación Ambiental'; }
+
+    $('temp').innerHTML = cur.temp.toFixed(1) + '<small>°C</small>';
+    $('hum').innerHTML = (cur.hum == null ? '--' : Math.round(cur.hum)) + '<small>%</small>';
+    setScale($('tFill'), $('tMark'), cur.temp / 40);
+    setScale($('hFill'), $('hMark'), (cur.hum || 0) / 100);
+    setDelta($('tDelta'), cur.temp, prev && prev.temp, ' °C', 1);
+    if (cur.hum == null) $('hDelta').textContent = ''; else setDelta($('hDelta'), cur.hum, prev && prev.hum, ' %', 0);
+
+    const [text, sub] = state(cur.temp, cur.hum);
+    $('stateText').textContent = text; $('stateSub').textContent = sub;
+    const ts = history.map(r => r.temp), hs = history.map(r => r.hum).filter(v => v != null);
+    $('tMin').textContent = Math.min(...ts).toFixed(1) + ' °C';
+    $('tMax').textContent = Math.max(...ts).toFixed(1) + ' °C';
+    $('hMin').textContent = hs.length ? Math.round(Math.min(...hs)) + ' %' : '--';
+    $('hMax').textContent = hs.length ? Math.round(Math.max(...hs)) + ' %' : '--';
+
+    $('rows').innerHTML = history.map(r => `
+      <tr>
+        <td class="hide-sm">${r.date}</td>
+        <td>${r.time}</td>
+        <td class="num">${r.temp.toFixed(1)} °C</td>
+        <td class="num">${r.hum == null ? '--' : Math.round(r.hum) + ' %'}</td>
+      </tr>`).join('');
+
+    drawChart();
+    setStatus(DEMO ? 'Demo · datos simulados' : 'En línea', DEMO ? 'demo' : '');
+    $('foot').textContent = `Intervalo ${INTERVAL_MS / 1000} s · ${history.length}/${MAX_POINTS} registros`;
+    $('host').textContent = DEMO ? 'archivo local' : location.host;
+  }
+
+  setInterval(() => { $('clock').textContent = new Date().toLocaleTimeString('es-ES'); }, 1000);
+  window.addEventListener('resize', drawChart);
+
+  update();
+  setInterval(update, INTERVAL_MS);
+</script>
+</body>
+</html>
